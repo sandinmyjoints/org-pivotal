@@ -1,0 +1,17 @@
+# Generated files
+*.elc
+*-pkg.el
+*.tar
+TAGS
+doc/org-pivotal.texi
+doc/org-pivotal.info
+
+# Packages
+elpa
+/.cask
+dist
+
+# Ecukes
+/features/project/.cask
+/features/project/test/*.el
+.ecukes-failing-scenarios
