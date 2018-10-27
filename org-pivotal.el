@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 2018 Huy Duong
 
-;; Author: Huy Duong <qhuyduong@Huys-MBP>
+;; Author: Huy Duong <qhuyduong@hotmail.com>
 ;; Version: 0.1
 
 ;; This file is not part of GNU Emacs.
