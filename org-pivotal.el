@@ -1,4 +1,4 @@
-;;; org-pivotal.el --- org-pivotal is an emacs minor mode to extend org-mode with Pivotal Tracker abilities
+;;; org-pivotal.el --- org-pivotal is an Emacs minor mode to extend org-mode with Pivotal Tracker abilities
 
 ;; Copyright (C) 2018 Huy Duong
 
@@ -22,7 +22,7 @@
 
 ;;; Commentary:
 
-;; org-pivotal is an emacs minor mode to extend org-mode with Pivotal Tracker abilities
+;; org-pivotal is an Emacs minor mode to extend org-mode with Pivotal Tracker abilities
 
 ;;; Code:
 
