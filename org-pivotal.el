@@ -153,12 +153,12 @@ QUERY params."
 
 (defun org-pivotal-convert-story-to-heading (story)
   "Convert STORY to org heading."
-  (message ">>>>> %s" story)
   (-map (lambda (item) (insert item "\n"))
         (list (format "* %s %s"
                       (upcase-initials (alist-get 'current_state story))
                       (alist-get 'name story)
                       )
+              ;; TODO: Use indentation instead of literal spaces
               "  :PROPERTIES:"
               (format "  :ID: %s" (alist-get 'id story))
               (format "  :Type: %s" (upcase-initials (alist-get 'story_type story)))
@@ -173,8 +173,10 @@ QUERY params."
   "Update org buffer with STORIES."
   (with-current-buffer (current-buffer)
     (org-mode)
-    (goto-char (point-max))
     (set-buffer-file-coding-system 'utf-8-auto) ;; force utf-8
+    (goto-char (point-min))
+    (outline-next-heading)
+    (kill-region (point-at-bol) (point-max))
     (-map 'org-pivotal-convert-story-to-heading stories)
     (call-interactively 'save-buffer))
   (org-set-regexps-and-options))
