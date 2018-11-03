@@ -31,6 +31,7 @@
 (require 'dash-functional)
 (require 'ido)
 (require 'json)
+(require 'org)
 (require 'request)
 (require 'subr-x)
 
@@ -51,12 +52,17 @@
     :type 'string)
 
   (defcustom org-pivotal-base-url "https://www.pivotaltracker.com"
-    "Base APIv5 URL."
+    "Base URL."
     :group 'org-pivotal
     :type 'string)
 
+  (defcustom org-pivotal-my-info nil
+    "My Pivotal User ID"
+    :group 'org-pivotal
+    :type 'alist)
+
   (defconst org-pivotal-transition-states
-    '("UNSCHEDULED" "UNSTARTED" "PLANNED" "STARTED" "FINISHED" "DELIVERED" "|" "ACCEPTED" "REJECTED")
+    '("Unscheduled" "Unstarted" "Planned" "Started" "Finished" "Delivered" "|" "Accepted" "Rejected")
     "Story status will be one of these values."))
 
 (defun org-pivotal-api-url-generator (&rest parts-of-url)
@@ -64,28 +70,26 @@
   (apply 'concat org-pivotal-api-base-url
          (-map (lambda (part) (concat "/" part)) parts-of-url)))
 
-(defun org-pivotal-api-call (url method)
+(defun org-pivotal-api-call (url method &optional query)
   "Access wrapper for the Pivotal (v5) JSON API.
 URL of the API endpoint
-METHOD to use."
+METHOD to use
+QUERY params."
   (funcall (-compose '(lambda (response)
                         (request-response-data response))
-                     '(lambda (url method)
+                     '(lambda (url method query)
                         (request url
-                                 :sync t
-                                 :type method
                                  :headers `(("X-TrackerToken" . ,org-pivotal-api-token)
                                             ("Content-Type" . "application/json"))
-                                 :parser 'json-read)))
-           url method))
-
-(defun org-pivotal-get-projects ()
-  "Get all of a user's active projects."
-  (org-pivotal-api-call
-   (org-pivotal-api-url-generator "projects") "GET"))
+                                 :params query
+                                 :parser 'json-read
+                                 :sync t
+                                 :type method)))
+           url method query))
 
 (defun org-pivotal-select-project (projects)
   "Prompt user to select a project from PROJECTS."
+  (message "projects: %s" projects)
   (funcall (-compose '(lambda (projects)
                         (let ((ido-max-window-height (1+ (length projects))))
                           (cadr (assoc
@@ -94,7 +98,8 @@ METHOD to use."
                                  projects))))
                      '(lambda (projects)
                         (-map (lambda (project)
-                                (list (alist-get 'name project) (alist-get 'id project)))
+                                (list (alist-get 'project_name project)
+                                      (alist-get 'project_id project)))
                               projects)))
            projects
            ))
@@ -106,32 +111,91 @@ METHOD to use."
                                   (number-to-string project-id))
    "GET"))
 
-(defun org-pivotal-update-buffer-with-metadata (project)
-   "Update org buffer with metadata from PROJECT."
-   (with-current-buffer (current-buffer)
-     (org-mode)
-     (goto-char (point-min))
-     (set-buffer-file-coding-system 'utf-8-auto) ;; force utf-8
-     (-map (lambda (item) (insert item "\n"))
-           (list ":PROPERTIES:"
-                 (format "#+PROPERTY: project-name %s" (cdr (assoc 'name project)))
-                 (format "#+PROPERTY: project-id %d" (cdr (assoc 'id project)))
-                 (format "#+PROPERTY: velocity %d" (cdr (assoc 'velocity_averaged_over project)))
-                 (format "#+PROPERTY: url %s/n/projects/%d" org-pivotal-base-url (cdr (assoc 'id project)))
-                 (format "#+TODO: %s" (string-join org-pivotal-transition-states " "))
-                 ":END:"
-                 ))
-     (goto-char (point-min))
-     (org-cycle)))
+(defun org-pivotal-get-my-info ()
+  "Get my Pivotal User ID."
+  (org-pivotal-api-call (org-pivotal-api-url-generator "me") "GET"))
+
+(defun org-pivotal-update-buffer-with-metadata (project my-info)
+  "Update org buffer with metadata from PROJECT and MY-INFO."
+  (with-current-buffer (current-buffer)
+    (org-mode)
+    (goto-char (point-min))
+    (set-buffer-file-coding-system 'utf-8-auto) ;; force utf-8
+    (-map (lambda (item) (insert item "\n"))
+          (list ":PROPERTIES:"
+                (format "#+PROPERTY: project-name \"%s\"" (alist-get 'name project))
+                (format "#+PROPERTY: project-id %d" (alist-get 'id project))
+                (format "#+PROPERTY: velocity %d" (alist-get 'velocity_averaged_over project))
+                (format "#+PROPERTY: url \"%s/n/projects/%d\"" org-pivotal-base-url (alist-get 'id project))
+                (format "#+PROPERTY: my-id %d" (alist-get 'id my-info))
+                (format "#+TODO: %s" (string-join org-pivotal-transition-states " "))
+                ":END:"
+                ))
+    (call-interactively 'save-buffer))
+  (org-set-regexps-and-options))
 
 ;;;###autoload
 (defun org-pivotal-install-project-metadata ()
   "Install selected project's metadata to buffer."
   (interactive)
-  (funcall (-compose 'org-pivotal-update-buffer-with-metadata
-                     'org-pivotal-get-project-info
-                     'org-pivotal-select-project
-                     'org-pivotal-get-projects)))
+  (let ((my-info (org-pivotal-get-my-info)))
+    (let ((project (funcall (-compose 'org-pivotal-get-project-info
+                                      'org-pivotal-select-project)
+                            (alist-get 'projects my-info))))
+      (org-pivotal-update-buffer-with-metadata project my-info))))
+
+(defun org-pivotal-get-my-stories (project-id user-id)
+  "Get my stories using USER-ID from PROJECT-ID's project."
+  (org-pivotal-api-call
+   (org-pivotal-api-url-generator "projects" project-id "stories")
+   "GET"
+   (list (cons "filter" (format "owner:%s" user-id)))))
+
+(defun org-pivotal-convert-story-to-heading (story)
+  "Convert STORY to org heading."
+  (message ">>>>> %s" story)
+  (-map (lambda (item) (insert item "\n"))
+        (list (format "* %s %s"
+                      (upcase-initials (alist-get 'current_state story))
+                      (alist-get 'name story)
+                      )
+              "  :PROPERTIES:"
+              (format "  :ID: %s" (alist-get 'id story))
+              (format "  :Type: %s" (upcase-initials (alist-get 'story_type story)))
+              (format "  :Points: %s" (alist-get 'estimate story))
+              (format "  :Updated: %s" (alist-get 'updated_at story))
+              (format "  :URL: %s" (alist-get 'url story))
+              (format "  :Description: %s" (alist-get 'description story))
+              "  :END:"
+              )))
+
+(defun org-pivotal-update-buffer-with-stories (stories)
+  "Update org buffer with STORIES."
+  (with-current-buffer (current-buffer)
+    (org-mode)
+    (goto-char (point-max))
+    (set-buffer-file-coding-system 'utf-8-auto) ;; force utf-8
+    (-map 'org-pivotal-convert-story-to-heading stories)
+    (call-interactively 'save-buffer))
+  (org-set-regexps-and-options))
+
+;;;###autoload
+(defun org-pivotal-pull-my-stories ()
+  "Pull my stories to org buffer."
+  (interactive)
+  (funcall (-compose 'org-pivotal-update-buffer-with-stories
+                     'org-pivotal-get-my-stories)
+           (cdr (assoc-string "project-id" org-file-properties))
+           (cdr (assoc-string "my-id" org-file-properties))))
+
+
+;; (defun org-pivotal-push-my-stories ()
+;;   "Pull my stories to org buffer."
+;;   (interactive)
+;;   (funcall (-compose 'org-pivotal-update-buffer-with-metadata
+;;                      'org-pivotal-get-project-info
+;;                      'org-pivotal-select-project
+;;                      'org-pivotal-get-projects)))
 
 (provide 'org-pivotal)
 
