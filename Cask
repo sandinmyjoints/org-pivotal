@@ -2,14 +2,17 @@
 
 (package-file "org-pivotal.el")
 
+(files "org-pivotal.el")
+
 (development
- (depends-on "ert")
+ (depends-on "cask-package-toolset")
+ (depends-on "f")
  (depends-on "flycheck")
  (depends-on "flycheck-cask")
- (depends-on "f")
  (depends-on "ecukes")
- (depends-on "ert-runner")
  (depends-on "el-mock")
- (depends-on "cask-package-toolset")
- (depends-on "undercover")
- (depends-on "package-lint"))
+ (depends-on "ert")
+ (depends-on "ert-runner")
+ (depends-on "package-lint")
+ (depends-on "request")
+ (depends-on "undercover"))
