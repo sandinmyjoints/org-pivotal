@@ -40,19 +40,24 @@
     "Pivotal Tracker."
     :group 'external)
 
-  (defconst org-pivotal-transition-states
-    '("UNSCHEDULED" "UNSTARTED" "PLANNED" "STARTED" "FINISHED" "DELIVERED" "|" "ACCEPTED" "REJECTED")
-    "Story status will be one of these values.")
+  (defcustom org-pivotal-api-base-url "https://www.pivotaltracker.com/services/v5"
+    "Base APIv5 URL."
+    :group 'org-pivotal
+    :type 'string)
 
   (defcustom org-pivotal-api-token nil
     "API key found on the /profile page of pivotal tracker."
     :group 'org-pivotal
     :type 'string)
 
-  (defcustom org-pivotal-api-base-url "https://www.pivotaltracker.com/services/v5"
+  (defcustom org-pivotal-base-url "https://www.pivotaltracker.com"
     "Base APIv5 URL."
     :group 'org-pivotal
-    :type 'string))
+    :type 'string)
+
+  (defconst org-pivotal-transition-states
+    '("UNSCHEDULED" "UNSTARTED" "PLANNED" "STARTED" "FINISHED" "DELIVERED" "|" "ACCEPTED" "REJECTED")
+    "Story status will be one of these values."))
 
 (defun org-pivotal-api-url-generator (&rest parts-of-url)
   "Build a Pivotal API URL from PARTS-OF-URL."
@@ -104,12 +109,15 @@ METHOD to use."
 (defun org-pivotal-update-buffer-with-metadata (project)
    "Update org buffer with metadata from PROJECT."
    (with-current-buffer (current-buffer)
+     (org-mode)
      (goto-char (point-min))
      (set-buffer-file-coding-system 'utf-8-auto) ;; force utf-8
      (-map (lambda (item) (insert item "\n"))
            (list ":PROPERTIES:"
                  (format "#+PROPERTY: project-name %s" (cdr (assoc 'name project)))
-                 (format "#+PROPERTY: project-id %s" (cdr (assoc 'id project)))
+                 (format "#+PROPERTY: project-id %d" (cdr (assoc 'id project)))
+                 (format "#+PROPERTY: velocity %d" (cdr (assoc 'velocity_averaged_over project)))
+                 (format "#+PROPERTY: url %s/n/projects/%d" org-pivotal-base-url (cdr (assoc 'id project)))
                  (format "#+TODO: %s" (string-join org-pivotal-transition-states " "))
                  ":END:"
                  ))
