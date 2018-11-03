@@ -56,11 +56,6 @@
     :group 'org-pivotal
     :type 'string)
 
-  (defcustom org-pivotal-my-info nil
-    "My Pivotal User ID"
-    :group 'org-pivotal
-    :type 'alist)
-
   (defconst org-pivotal-transition-states
     '("Unscheduled" "Unstarted" "Planned" "Started" "Finished" "Delivered" "|" "Accepted" "Rejected")
     "Story status will be one of these values."))
@@ -123,10 +118,10 @@ QUERY params."
     (set-buffer-file-coding-system 'utf-8-auto) ;; force utf-8
     (-map (lambda (item) (insert item "\n"))
           (list ":PROPERTIES:"
-                (format "#+PROPERTY: project-name \"%s\"" (alist-get 'name project))
+                (format "#+PROPERTY: project-name %s" (alist-get 'name project))
                 (format "#+PROPERTY: project-id %d" (alist-get 'id project))
                 (format "#+PROPERTY: velocity %d" (alist-get 'velocity_averaged_over project))
-                (format "#+PROPERTY: url \"%s/n/projects/%d\"" org-pivotal-base-url (alist-get 'id project))
+                (format "#+PROPERTY: url %s/n/projects/%d" org-pivotal-base-url (alist-get 'id project))
                 (format "#+PROPERTY: my-id %d" (alist-get 'id my-info))
                 (format "#+TODO: %s" (string-join org-pivotal-transition-states " "))
                 ":END:"
@@ -144,12 +139,12 @@ QUERY params."
                             (alist-get 'projects my-info))))
       (org-pivotal-update-buffer-with-metadata project my-info))))
 
-(defun org-pivotal-get-my-stories (project-id user-id)
-  "Get my stories using USER-ID from PROJECT-ID's project."
+(defun org-pivotal-get-stories (project-id &optional filter)
+  "Get stories from PROJECT-ID's project with FILTER."
   (org-pivotal-api-call
    (org-pivotal-api-url-generator "projects" project-id "stories")
    "GET"
-   (list (cons "filter" (format "owner:%s" user-id)))))
+   (if filter (list (cons "filter" filter)))))
 
 (defun org-pivotal-convert-story-to-heading (story)
   "Convert STORY to org heading."
@@ -182,22 +177,14 @@ QUERY params."
   (org-set-regexps-and-options))
 
 ;;;###autoload
-(defun org-pivotal-pull-my-stories ()
-  "Pull my stories to org buffer."
+(defun org-pivotal-pull-stories ()
+  "Pull stories to org buffer."
   (interactive)
+  (org-set-regexps-and-options)
   (funcall (-compose 'org-pivotal-update-buffer-with-stories
-                     'org-pivotal-get-my-stories)
+                     'org-pivotal-get-stories)
            (cdr (assoc-string "project-id" org-file-properties))
-           (cdr (assoc-string "my-id" org-file-properties))))
-
-
-;; (defun org-pivotal-push-my-stories ()
-;;   "Pull my stories to org buffer."
-;;   (interactive)
-;;   (funcall (-compose 'org-pivotal-update-buffer-with-metadata
-;;                      'org-pivotal-get-project-info
-;;                      'org-pivotal-select-project
-;;                      'org-pivotal-get-projects)))
+           (cdr (assoc-string "filter" org-file-properties))))
 
 (provide 'org-pivotal)
 
