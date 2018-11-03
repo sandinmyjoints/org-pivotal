@@ -9,6 +9,8 @@
  (depends-on "f")
  (depends-on "flycheck")
  (depends-on "flycheck-cask")
+ (depends-on "dash")
+ (depends-on "dash-functional")
  (depends-on "ecukes")
  (depends-on "el-mock")
  (depends-on "ert")

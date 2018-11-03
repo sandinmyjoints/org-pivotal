@@ -25,11 +25,44 @@
 
 ;;; Code:
 
+(require 'el-mock)
 (require 'ert)
 (require 'org-pivotal)
 
-(ert-deftest org-pivotal-check-sum ()
-  (should (equal (+ 1 1) 2)))
+(ert-deftest org-pivotal-api-url-generator-test ()
+  (should (equal (org-pivotal-api-url-generator "projects" "12345678")
+                 "https://www.pivotaltracker.com/services/v5/projects/12345678")))
+
+(ert-deftest org-pivotal-api-call-test ()
+  (let ((response [((id . "12345678") (name . "Test project"))]))
+    (should (equal response
+                   (with-mock
+                    (mock (request "http://server/some-uri"
+                                   :sync t
+                                   :type "GET"
+                                   :headers `(("X-TrackerToken" . :org-pivotal-api-token)
+                                              ("Content-Type" . "application/json"))
+                                   :parser 'json-read)
+                          => (record 'request-response 200 nil response))
+                    (let ((url "http://server/some-uri")
+                          (org-pivotal-api-token :org-pivotal-api-token))
+                      (org-pivotal-api-call url "GET")))))))
+
+(ert-deftest org-pivotal-get-projects-test ()
+  (should (equal '("Test project")
+                 (with-mock
+                  (mock (org-pivotal-api-url-generator "projects")
+                        => "http://server/some-uri")
+                  (mock (org-pivotal-api-call "http://server/some-uri" "GET")
+                        => [((id . "12345678") (name . "Test project"))])
+                  (org-pivotal-get-projects)))))
+
+(ert-deftest org-pivotal-set-project-test ()
+  (should (equal :res-with-ido
+                 (let ((org-trello-input-completion-mechanism 'default))
+                   (with-mock
+                    (mock (ido-completing-read :prompt :choices nil 'do-match) => :res-with-ido)
+                    (orgtrello-input-read-string-completion :prompt :choices))))))
 
 (provide 'org-pivotal-test)
 
