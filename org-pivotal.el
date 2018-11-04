@@ -84,7 +84,6 @@ QUERY params."
 
 (defun org-pivotal-select-project (projects)
   "Prompt user to select a project from PROJECTS."
-  (message "projects: %s" projects)
   (funcall (-compose '(lambda (projects)
                         (let ((ido-max-window-height (1+ (length projects))))
                           (cadr (assoc
@@ -114,6 +113,7 @@ QUERY params."
   (with-current-buffer (current-buffer)
     (erase-buffer)
     (org-mode)
+    (org-indent-mode)
     (goto-char (point-min))
     (set-buffer-file-coding-system 'utf-8-auto) ;; force utf-8
     (-map (lambda (item) (insert item "\n"))
@@ -160,12 +160,17 @@ QUERY params."
               (format ":Updated: %s" (alist-get 'updated_at story))
               (format ":URL: %s" (alist-get 'url story))
               (format ":Description: %s" (alist-get 'description story))
+              (format ":Labels: %s" (string-join
+                                     (-map (lambda (label) (format "\"%s\""(alist-get 'name label)))
+                                           (alist-get 'labels story))
+                                     " "))
               ":END:")))
 
 (defun org-pivotal-update-buffer-with-stories (stories)
   "Update org buffer with STORIES."
   (with-current-buffer (current-buffer)
     (org-mode)
+    (org-indent-mode)
     (set-buffer-file-coding-system 'utf-8-auto) ;; force utf-8
     (goto-char (point-min))
     (outline-next-heading)
