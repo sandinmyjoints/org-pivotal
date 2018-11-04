@@ -57,7 +57,7 @@
     :type 'string)
 
   (defconst org-pivotal-transition-states
-    '("Unscheduled" "Unstarted" "Planned" "Started" "Finished" "Delivered" "|" "Accepted" "Rejected")
+    '("Unstarted" "Started" "Finished" "Delivered" "|" "Accepted" "Rejected")
     "Story status will be one of these values."))
 
 (defun org-pivotal-api-url-generator (&rest parts-of-url)
