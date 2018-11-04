@@ -113,6 +113,7 @@ QUERY params."
 (defun org-pivotal-update-buffer-with-metadata (project my-info)
   "Update org buffer with metadata from PROJECT and MY-INFO."
   (with-current-buffer (current-buffer)
+    (erase-buffer)
     (org-mode)
     (goto-char (point-min))
     (set-buffer-file-coding-system 'utf-8-auto) ;; force utf-8
