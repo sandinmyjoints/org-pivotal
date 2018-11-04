@@ -147,7 +147,7 @@ DATA data."
    "GET"
    (if filter (list (cons "filter" filter)))))
 
-(defun org-pivotal-convert-story-to-heading (story)
+(defun org-pivotal-convert-story-to-headline (story)
   "Convert STORY to org heading."
   (-map (lambda (item)
           (insert item "\n")
@@ -177,7 +177,7 @@ DATA data."
     (goto-char (point-min))
     (outline-next-heading)
     (kill-region (point-at-bol) (point-max))
-    (-map 'org-pivotal-convert-story-to-heading stories)
+    (-map 'org-pivotal-convert-story-to-headline stories)
     (call-interactively 'save-buffer))
   (org-set-regexps-and-options))
 
