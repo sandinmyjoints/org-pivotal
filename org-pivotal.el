@@ -1,4 +1,4 @@
-;;; org-pivotal.el --- Minor mode to extend org-mode with Pivotal Tracker -*- lexical-binding: t; -*-
+;;; org-pivotal.el --- Utility to sync Pivotal Tracker to org buffer -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2018 Huy Duong
 
@@ -22,7 +22,7 @@
 
 ;;; Commentary:
 
-;; org-pivotal is an Emacs minor mode to extend org-mode with Pivotal Tracker abilities
+;; org-pivotal is a utility to sync Pivotal Tracker to org buffer
 
 ;;; Code:
 
