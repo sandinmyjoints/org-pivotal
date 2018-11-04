@@ -96,8 +96,7 @@ QUERY params."
                                 (list (alist-get 'project_name project)
                                       (alist-get 'project_id project)))
                               projects)))
-           projects
-           ))
+           projects))
 
 (defun org-pivotal-get-project-info (project-id)
   "Get PROJECT-ID's project info."
@@ -125,8 +124,7 @@ QUERY params."
                 (format "#+PROPERTY: url %s/n/projects/%d" org-pivotal-base-url (alist-get 'id project))
                 (format "#+PROPERTY: my-id %d" (alist-get 'id my-info))
                 (format "#+TODO: %s" (string-join org-pivotal-transition-states " "))
-                ":END:"
-                ))
+                ":END:"))
     (call-interactively 'save-buffer))
   (org-set-regexps-and-options))
 
@@ -149,21 +147,20 @@ QUERY params."
 
 (defun org-pivotal-convert-story-to-heading (story)
   "Convert STORY to org heading."
-  (-map (lambda (item) (insert item "\n"))
+  (-map (lambda (item)
+          (insert item "\n")
+          (org-indent-line))
         (list (format "* %s %s"
                       (upcase-initials (alist-get 'current_state story))
-                      (alist-get 'name story)
-                      )
-              ;; TODO: Use indentation instead of literal spaces
-              "  :PROPERTIES:"
-              (format "  :ID: %s" (alist-get 'id story))
-              (format "  :Type: %s" (upcase-initials (alist-get 'story_type story)))
-              (format "  :Points: %s" (alist-get 'estimate story))
-              (format "  :Updated: %s" (alist-get 'updated_at story))
-              (format "  :URL: %s" (alist-get 'url story))
-              (format "  :Description: %s" (alist-get 'description story))
-              "  :END:"
-              )))
+                      (alist-get 'name story))
+              ":PROPERTIES:"
+              (format ":ID: %s" (alist-get 'id story))
+              (format ":Type: %s" (upcase-initials (alist-get 'story_type story)))
+              (format ":Points: %s" (alist-get 'estimate story))
+              (format ":Updated: %s" (alist-get 'updated_at story))
+              (format ":URL: %s" (alist-get 'url story))
+              (format ":Description: %s" (alist-get 'description story))
+              ":END:")))
 
 (defun org-pivotal-update-buffer-with-stories (stories)
   "Update org buffer with STORIES."
