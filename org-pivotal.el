@@ -65,22 +65,24 @@
   (apply 'concat org-pivotal-api-base-url
          (-map (lambda (part) (concat "/" part)) parts-of-url)))
 
-(defun org-pivotal-api-call (url method &optional query)
+(defun org-pivotal-api-call (url method &optional query data)
   "Access wrapper for the Pivotal (v5) JSON API.
 URL of the API endpoint
 METHOD to use
-QUERY params."
+QUERY params
+DATA data."
   (funcall (-compose '(lambda (response)
                         (request-response-data response))
-                     '(lambda (url method query)
+                     '(lambda (url method query data)
                         (request url
+                                 :data (if data (json-encode data) nil)
                                  :headers `(("X-TrackerToken" . ,org-pivotal-api-token)
                                             ("Content-Type" . "application/json"))
                                  :params query
                                  :parser 'json-read
                                  :sync t
                                  :type method)))
-           url method query))
+           url method query data))
 
 (defun org-pivotal-select-project (projects)
   "Prompt user to select a project from PROJECTS."
