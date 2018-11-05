@@ -86,9 +86,9 @@ DATA data."
   "Push STORY to PROJECT-ID's project Pivotal."
   (org-pivotal-api--call
    (org-pivotal-api--url-generator "projects"
-                                   project-id
-                                  "stories"
-                                  (alist-get 'id story))
+                                   (number-to-string project-id)
+                                   "stories"
+                                   (cdr (assoc-string "id" story)))
    "PUT"
    nil
    story))

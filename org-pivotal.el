@@ -130,6 +130,22 @@
             (cdr (assoc-string "project-id" org-file-properties)))
            (cdr (assoc-string "filter" org-file-properties))))
 
+(defun org-pivotal--convert-headline-to-story (properties)
+  "Convert headline's PROPERTIES to story."
+  (list (cons "id" (cdr (assoc-string "ID" properties)))
+        (cons "name" (cdr (assoc-string "ITEM" properties)))
+        (cons "current_state" (cdr (assoc-string "TODO" properties)))
+        (cons "description" (cdr (assoc-string "DESCRIPTION" properties)))))
+
+;;;###autoload
+(defun org-pivotal-push-story ()
+  "Pull stories to org buffer."
+  (interactive)
+  (let ((story (org-pivotal--convert-headline-to-story (org-entry-properties))))
+    (org-pivotal-api--put-story
+     (string-to-number (cdr (assoc-string "project-id" org-file-properties)))
+     story)))
+
 (provide 'org-pivotal)
 
 ;;; org-pivotal.el ends here
