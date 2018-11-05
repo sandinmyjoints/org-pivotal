@@ -12,6 +12,29 @@ build the project.
     cd org-pivotal
     make && make install
 
+## Manual Installation
+
+```
+git clone git@github.com:org-pivotal/org-pivotal.git ~/.emacs.d/private/local
+
+# add to additional-packages
+dotspacemacs-additional-packages
+'(
+  ...
+  helm
+  (org-pivotal :location local))
+
+# Usage
+
+;; Pivoltracker - set under user-config
+(require 'org-pivotal)
+(setq org-pivotal-api-token (getenv "PIVOTAL_API_TOKEN"))
+(evil-leader/set-key-for-mode 'org-mode "pu" 'org-pivotal-push-story)
+(evil-leader/set-key-for-mode 'org-mode "pp" 'org-pivotal-pull-stories)
+(evil-leader/set-key-for-mode 'org-mode "pi" 'org-pivotal-install-project-metadata)
+
+```
+
 ## Contributing
 
 Yes, please do! See [CONTRIBUTING][] for guidelines.
