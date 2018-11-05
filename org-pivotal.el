@@ -26,6 +26,7 @@
 
 ;;; Code:
 
+(require 'a)
 (require 'dash)
 (require 'dash-functional)
 (require 'ido)
@@ -126,16 +127,15 @@
   (org-set-regexps-and-options)
   (funcall (-compose 'org-pivotal--update-buffer-with-stories
                      'org-pivotal-api--get-stories)
-           (string-to-number
-            (cdr (assoc-string "project-id" org-file-properties)))
-           (cdr (assoc-string "filter" org-file-properties))))
+           (a-get org-file-properties "project-id")
+           (a-get org-file-properties "filter")))
 
 (defun org-pivotal--convert-headline-to-story (properties)
   "Convert headline's PROPERTIES to story."
-  (list (cons "id" (cdr (assoc-string "ID" properties)))
-        (cons "name" (cdr (assoc-string "ITEM" properties)))
-        (cons "current_state" (cdr (assoc-string "TODO" properties)))
-        (cons "description" (cdr (assoc-string "DESCRIPTION" properties)))))
+  (list (cons "id" (a-get properties "ID"))
+        (cons "name" (a-get properties "ITEM"))
+        (cons "current_state" (a-get properties "TODO"))
+        (cons "description" (a-get properties "DESCRIPTION"))))
 
 ;;;###autoload
 (defun org-pivotal-push-story ()
@@ -143,7 +143,7 @@
   (interactive)
   (let ((story (org-pivotal--convert-headline-to-story (org-entry-properties))))
     (org-pivotal-api--put-story
-     (string-to-number (cdr (assoc-string "project-id" org-file-properties)))
+     (a-get org-file-properties "project-id")
      story)))
 
 (provide 'org-pivotal)

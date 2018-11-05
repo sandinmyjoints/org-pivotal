@@ -94,7 +94,7 @@ DATA data."
                                        (number-to-string project-id)
                                      project-id)
                                    "stories"
-                                   (cdr (assoc-string "id" story)))
+                                   (a-get story "id"))
    "PUT"
    nil
    story))

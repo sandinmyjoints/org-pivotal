@@ -5,6 +5,7 @@
 (files "org-pivotal.el")
 
 (development
+ (depends-on "a")
  (depends-on "cask-package-toolset")
  (depends-on "f")
  (depends-on "flycheck")
