@@ -13,7 +13,7 @@ org-pivotal is a utility to extend org-mode with Pivotal Tracker abilities
    :CUSTOM_ID: installing
    :END:
 
-You will need Emacs 24+, =make= and [[https://github.com/cask/cask][Cask]] to build the project.
+You will need Emacs 26.1+, =make= and [[https://github.com/cask/cask][Cask]] to build the project.
 
 #+BEGIN_SRC sh
     cd org-pivotal
