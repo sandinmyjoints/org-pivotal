@@ -39,11 +39,38 @@ If you don't want to set it directly in your Emacs's .el file, you can export it
 #+END_SRC
 
 ** Usage
+   :PROPERTIES:
+   :CUSTOM_ID: usage
+   :END:
+
+1. To connect your org buffer to an existing project:
 
 #+BEGIN_SRC emacs-lisp
-  (evil-leader/set-key-for-mode 'org-mode "pu" 'org-pivotal-push-story)
-  (evil-leader/set-key-for-mode 'org-mode "pp" 'org-pivotal-pull-stories)
+M-x org-pivotal-install-project-metadata
+#+END_SRC
+
+Beware that this will only install properties needed to speak with Pivotal project (and nothing else).
+
+2. To pull stories to the org buffer:
+
+#+BEGIN_SRC emacs-lisp
+M-x org-pivotal-pull-stories
+#+END_SRC
+
+3. To sync a story to Pivotal, go over that story and execute:
+
+#+BEGIN_SRC emacs-lisp
+M-x org-pivotal-push-story
+#+END_SRC
+
+*** Hint
+
+If you are using Spacemacs, you can map all the commands above to leader key for quick access
+
+#+BEGIN_SRC emacs-lisp
   (evil-leader/set-key-for-mode 'org-mode "pi" 'org-pivotal-install-project-metadata)
+  (evil-leader/set-key-for-mode 'org-mode "pp" 'org-pivotal-pull-stories)
+  (evil-leader/set-key-for-mode 'org-mode "pu" 'org-pivotal-push-story)
 #+END_SRC
 
 ** Contributing
