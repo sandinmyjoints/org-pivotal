@@ -26,6 +26,7 @@
 
 ;;; Code:
 
+(require 'a)
 (require 'dash)
 (require 'dash-functional)
 (require 'json)
