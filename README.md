@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/organizations/org-pivotal.png?branch=master)](https://travis-ci.com/organizations/org-pivotal)
+[![Build Status](https://travis-ci.com/org-pivotal/org-pivotal.png?branch=master)](https://travis-ci.com/org-pivotal/org-pivotal)
 # org-pivotal
 
 ## Summary
