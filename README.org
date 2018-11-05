@@ -6,7 +6,7 @@
    :CUSTOM_ID: summary
    :END:
 
-org-pivotal is an Emacs minor mode to extend org-mode with Pivotal Tracker abilities
+org-pivotal is a utility to extend org-mode with Pivotal Tracker abilities
 
 ** Installing
    :PROPERTIES:
