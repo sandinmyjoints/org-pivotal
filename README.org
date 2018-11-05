@@ -15,7 +15,7 @@ org-pivotal is an Emacs minor mode to extend org-mode with Pivotal Tracker abili
 
 You will need Emacs 24+, =make= and [[https://github.com/cask/cask][Cask]] to build the project.
 
-#+BEGIN_SRC shell
+#+BEGIN_SRC sh
     cd org-pivotal
     make && make install
 #+END_SRC
@@ -45,23 +45,23 @@ If you don't want to set it directly in your Emacs's .el file, you can export it
 
 1. To connect your org buffer to an existing project:
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_EXAMPLE
 M-x org-pivotal-install-project-metadata
-#+END_SRC
+#+END_EXAMPLE
 
 Beware that this will only install properties needed to speak with Pivotal project (and nothing else).
 
 2. To pull stories to the org buffer:
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_EXAMPLE
 M-x org-pivotal-pull-stories
-#+END_SRC
+#+END_EXAMPLE
 
 3. To sync a story to Pivotal, go over that story and execute:
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_EXAMPLE
 M-x org-pivotal-push-story
-#+END_SRC
+#+END_EXAMPLE
 
 *** Hint
 
