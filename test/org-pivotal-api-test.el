@@ -42,7 +42,7 @@
                                  :data nil
                                  :headers `(("X-TrackerToken" . :org-pivotal-api-token)
                                             ("Content-Type" . "application/json"))
-                                 :params '((:filter . "owner:123456"))
+                                 :params '(("filter" . "owner:123456"))
                                  :parser 'json-read
                                  :sync t
                                  :type "GET")
@@ -50,7 +50,7 @@
                   (org-pivotal-api--call
                    "https://www.pivotaltracker.com"
                    "GET"
-                   '((:filter . "owner:123456"))))))
+                   '(("filter" . "owner:123456"))))))
   ;; Test API PUT
   (should (equal :response
                  (with-mock
@@ -110,9 +110,9 @@
 
 (ert-deftest org-pivotal-api--get-stories-test ()
   ;; Get all stories
-  (should (equal '[((:id . 12345678) (:name . "Test story 1"))
-                   ((:id . 87654321) (:name . "Test story 2"))
-                   ((:id . 12344321) (:name . "Test story 3"))]
+  (should (equal '[(("id" . 12345678) ("name" . "Test story 1"))
+                   (("id" . 87654321) ("name" . "Test story 2"))
+                   (("id" . 12344321) ("name" . "Test story 3"))]
                  (with-mock
                   (mock (org-pivotal-api--url-generator "projects" "11111111" "stories")
                         => "https://www.pivotaltracker.com/projects/11111111/stories")
@@ -120,22 +120,22 @@
                          "https://www.pivotaltracker.com/projects/11111111/stories"
                          "GET"
                          nil)
-                        => '[((:id . 12345678) (:name . "Test story 1"))
-                            ((:id . 87654321) (:name . "Test story 2"))
-                            ((:id . 12344321) (:name . "Test story 3"))])
+                        => '[(("id" . 12345678) ("name" . "Test story 1"))
+                            (("id" . 87654321) ("name" . "Test story 2"))
+                            (("id" . 12344321) ("name" . "Test story 3"))])
                   (org-pivotal-api--get-stories 11111111))))
   ;; Get filtered stories
-  (should (equal '[((:id . 12345678) (:name . "Test story 1"))
-                   ((:id . 87654321) (:name . "Test story 2"))]
+  (should (equal '[(("id" . 12345678) ("name" . "Test story 1"))
+                   (("id" . 87654321) ("name" . "Test story 2"))]
                  (with-mock
                   (mock (org-pivotal-api--url-generator "projects" "11111111" "stories")
                         => "https://www.pivotaltracker.com/projects/11111111/stories")
                   (mock (org-pivotal-api--call
                          "https://www.pivotaltracker.com/projects/11111111/stories"
                          "GET"
-                         '((:filter . "owner:22222222")))
-                        => '[((:id . 12345678) (:name . "Test story 1"))
-                            ((:id . 87654321) (:name . "Test story 2"))])
+                         '(("filter" . "owner:22222222")))
+                        => '[(("id" . 12345678) ("name" . "Test story 1"))
+                            (("id" . 87654321) ("name" . "Test story 2"))])
                   (org-pivotal-api--get-stories 11111111 "owner:22222222")))))
 
 (provide 'org-pivotal-api-test)
