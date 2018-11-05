@@ -66,7 +66,9 @@ DATA data."
   "Get PROJECT-ID's project info."
   (org-pivotal-api--call
    (org-pivotal-api--url-generator "projects"
-                                   (number-to-string project-id))
+                                   (if (numberp project-id)
+                                       (number-to-string project-id)
+                                     project-id))
    "GET"))
 
 (defun org-pivotal-api--get-my-info ()
@@ -77,7 +79,9 @@ DATA data."
   "Get stories from PROJECT-ID's project with FILTER."
   (org-pivotal-api--call
    (org-pivotal-api--url-generator "projects"
-                                   (number-to-string project-id)
+                                   (if (numberp project-id)
+                                       (number-to-string project-id)
+                                     project-id)
                                    "stories")
    "GET"
    (if filter `(("filter" . ,filter)))))
@@ -86,7 +90,9 @@ DATA data."
   "Push STORY to PROJECT-ID's project Pivotal."
   (org-pivotal-api--call
    (org-pivotal-api--url-generator "projects"
-                                   (number-to-string project-id)
+                                   (if (numberp project-id)
+                                       (number-to-string project-id)
+                                     project-id)
                                    "stories"
                                    (cdr (assoc-string "id" story)))
    "PUT"
