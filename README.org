@@ -1,4 +1,4 @@
-[[https://travis-ci.com/org-pivotal/org-pivotal][[[https://travis-ci.com/org-pivotal/org-pivotal.svg?branch=master]]]]
+[[https://travis-ci.com/org-pivotal/org-pivotal][https://travis-ci.com/org-pivotal/org-pivotal.svg?branch=master]]
 # org-pivotal
 
 ** Summary
