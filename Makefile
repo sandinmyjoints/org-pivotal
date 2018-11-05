@@ -59,13 +59,10 @@ $(TEXI_MANUAL) : $(PKG_DIR) $(ORG_MANUAL)
 
 check : test lint
 
-test: unit ecukes
+test: unit
 
 unit: $(PKG_DIR)
 	${CASK} exec ert-runner
-
-ecukes: $(PKG_DIR)
-	${CASK} exec ecukes
 
 lint : $(SRCS) clean-elc
 	# Byte compile all and stop on any warning or error
