@@ -45,23 +45,24 @@ If you don't want to set it directly in your Emacs's .el file, you can export it
 
 1. To connect your org buffer to an existing project:
 
-   #+BEGIN_EXAMPLE
+   #+BEGIN_QUOTE
    M-x org-pivotal-install-project-metadata
-   #+END_EXAMPLE
+   #+END_QUOTE
    
    Beware that this will only install properties needed to speak with Pivotal project (and nothing else).
+   
 2. To pull stories to the org buffer:
 
-   #+BEGIN_EXAMPLE
+   #+BEGIN_QUOTE
    M-x org-pivotal-pull-stories
-   #+END_EXAMPLE
+   #+END_QUOTE
    
 3. To sync a story to Pivotal, go over that story and execute:
 
-   #+BEGIN_EXAMPLE
+   #+BEGIN_QUOTE
    M-x org-pivotal-push-story
-   #+END_EXAMPLE
-
+   #+END_QUOTE
+   
 *** Hint
 
 If you are using Spacemacs, you can map all the commands above to leader key for quick access
