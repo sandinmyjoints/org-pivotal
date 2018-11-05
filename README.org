@@ -25,6 +25,7 @@ You will need Emacs 24+, =make= and [[https://github.com/cask/cask][Cask]] to bu
    :CUSTOM_ID: initial-setup
    :END:
 Before using the tracker you must setup your pivotal API key in Emacs. You can obtain the key from the [[https://www.pivotaltracker.com/profile][Profile]] link in the Pivotal Tracker web application.
+
 After obtaining the ky, you have to manually add it to your .emacs.d or .spacemacs like this:
 
 #+BEGIN_SRC emacs-lisp
