@@ -6,46 +6,44 @@
    :CUSTOM_ID: summary
    :END:
 
-org-pivotal is an Emacs minor mode to extend org-mode with Pivotal
-Tracker abilities
+org-pivotal is an Emacs minor mode to extend org-mode with Pivotal Tracker abilities
 
 ** Installing
    :PROPERTIES:
    :CUSTOM_ID: installing
    :END:
 
-You will need Emacs 24+, =make= and
-[[https://github.com/cask/cask][Cask]] to build the project.
+You will need Emacs 24+, =make= and [[https://github.com/cask/cask][Cask]] to build the project.
 
-#+BEGIN_EXAMPLE
+#+BEGIN_SRC shell
     cd org-pivotal
     make && make install
-#+END_EXAMPLE
+#+END_SRC
 
-** Manual Installation
+** Initial setup
    :PROPERTIES:
-   :CUSTOM_ID: manual-installation
+   :CUSTOM_ID: initial-setup
    :END:
+Before using the tracker you must setup your pivotal API key in Emacs. You can obtain the key from the [[https://www.pivotaltracker.com/profile][Profile]] link in the Pivotal Tracker web application.
+After obtaining the ky, you have to manually add it to your .emacs.d or .spacemacs like this:
 
-#+BEGIN_EXAMPLE
-    git clone git@github.com:org-pivotal/org-pivotal.git ~/.emacs.d/private/local
+#+BEGIN_SRC emacs-lisp
+  (setq org-pivotal-api-token "your-secret-token")
+#+END_SRC
 
-    # add to additional-packages
-    dotspacemacs-additional-packages
-    '(
-      ...
-      helm
-      (org-pivotal :location local))
+If you don't want to set it directly in your Emacs's .el file, you can export it to shell environment and use =getenv= to read it from within Emacs
 
-    # Usage
+#+BEGIN_SRC emacs-lisp
+  (setq org-pivotal-api-token (getenv "PIVOTAL_API_TOKEN"))
+#+END_SRC
 
-    ;; Pivoltracker - set under user-config
-    (require 'org-pivotal)
-    (setq org-pivotal-api-token (getenv "PIVOTAL_API_TOKEN"))
-    (evil-leader/set-key-for-mode 'org-mode "pu" 'org-pivotal-push-story)
-    (evil-leader/set-key-for-mode 'org-mode "pp" 'org-pivotal-pull-stories)
-    (evil-leader/set-key-for-mode 'org-mode "pi" 'org-pivotal-install-project-metadata)
-#+END_EXAMPLE
+** Usage
+
+#+BEGIN_SRC emacs-lisp
+  (evil-leader/set-key-for-mode 'org-mode "pu" 'org-pivotal-push-story)
+  (evil-leader/set-key-for-mode 'org-mode "pp" 'org-pivotal-pull-stories)
+  (evil-leader/set-key-for-mode 'org-mode "pi" 'org-pivotal-install-project-metadata)
+#+END_SRC
 
 ** Contributing
    :PROPERTIES:
