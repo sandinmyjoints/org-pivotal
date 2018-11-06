@@ -1,6 +1,7 @@
 [[https://travis-ci.com/org-pivotal/org-pivotal][https://travis-ci.com/org-pivotal/org-pivotal.svg?branch=master]]
-# org-pivotal
+[[https://www.gnu.org/licenses/gpl-3.0][https://img.shields.io/badge/License-GPL%20v3-blue.svg]]
 
+# org-pivotal
 ** Summary
    :PROPERTIES:
    :CUSTOM_ID: summary
