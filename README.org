@@ -1,5 +1,6 @@
 [[https://travis-ci.com/org-pivotal/org-pivotal][https://travis-ci.com/org-pivotal/org-pivotal.svg?branch=master]]
 [[https://www.gnu.org/licenses/gpl-3.0][https://img.shields.io/badge/License-GPL%20v3-blue.svg]]
+[[http://hits.dwyl.io/org-pivotal/org-pivotal][http://hits.dwyl.io/org-pivotal/org-pivotal.svg]]
 
 # org-pivotal
 ** Summary
