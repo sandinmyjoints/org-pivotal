@@ -33,8 +33,8 @@
 (require 'dash-functional)
 (require 'ido)
 (require 'org)
-(require 'subr-x)
 (require 'org-pivotal-api)
+(require 'subr-x)
 
 (defconst org-pivotal--base-url "https://www.pivotaltracker.com"
   "Base URL.")

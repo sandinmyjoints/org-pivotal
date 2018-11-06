@@ -26,6 +26,6 @@
 (declare-function undercover "undercover")
 
 (when (require 'undercover nil t)
-  (undercover "org-pivotal.el"))
+  (undercover "org-pivotal*.el"))
 
 ;;; test-helper.el ends here
