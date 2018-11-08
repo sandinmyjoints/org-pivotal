@@ -63,7 +63,6 @@
   (with-current-buffer (current-buffer)
     (erase-buffer)
     (org-mode)
-    (org-indent-mode)
     (goto-char (point-min))
     (set-buffer-file-coding-system 'utf-8-auto) ;; force utf-8
     (-map (lambda (item) (insert item "\n"))
@@ -113,7 +112,6 @@
   "Update org buffer with STORIES."
   (with-current-buffer (current-buffer)
     (org-mode)
-    (org-indent-mode)
     (set-buffer-file-coding-system 'utf-8-auto) ;; force utf-8
     (goto-char (point-min))
     (outline-next-heading)
