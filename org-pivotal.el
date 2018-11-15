@@ -1,11 +1,11 @@
-;;; org-pivotal.el --- Utility to sync Pivotal Tracker to org buffer -*- lexical-binding: t; -*-
+;;; org-pivotal.el --- Sync Pivotal Tracker to org buffer -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2018 Huy Duong
 
 ;; Author: Huy Duong <qhuyduong@hotmail.com>
 ;; URL: https://github.com/org-pivotal/org-pivotal
 ;; Version: 0.1
-;; Package-Requires: ((emacs "26.1"))
+;; Package-Requires: ((a "0.1.1") (dash "2.14.1") (dash-functional "1.2.0") (emacs "26.1"))
 
 ;; This file is not part of GNU Emacs.
 
@@ -31,7 +31,6 @@
 (require 'a)
 (require 'dash)
 (require 'dash-functional)
-(require 'ido)
 (require 'org)
 (require 'org-pivotal-api)
 (require 'subr-x)
@@ -46,10 +45,10 @@
 (defun org-pivotal--select-project (projects)
   "Prompt user to select a project from PROJECTS."
   (funcall (-compose '(lambda (projects)
-                        (let ((ido-max-window-height (1+ (length projects))))
+                        (let ((max-mini-window-height (1+ (length projects))))
                           (cadr (assoc
-                                 (ido-completing-read "Select your project?"
-                                                      (-map 'car projects))
+                                 (completing-read "Select your project?"
+                                                  (-map 'car projects))
                                  projects))))
                      '(lambda (projects)
                         (-map (lambda (project)
