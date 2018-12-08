@@ -49,9 +49,9 @@ If you don't want to set it directly in your Emacs's .el file, you can export it
    :END:
    | Keybindings | Interactive commands                     | Description                                   |
    |-------------+------------------------------------------+-----------------------------------------------|
-   | C-c ( i     | M-x org-pivotal-install-project-metadata | Install selected project's metadata to buffer |
-   | C-c ( f     | M-x org-pivotal-pull-stories             | Pull stories to org buffer                    |
-   | C-c ( p     | M-x org-pivotal-push-story               | Push current story to Pivotal                 |
+   | ~C-c ( i~     | ~M-x org-pivotal-install-project-metadata~ | Install selected project's metadata to buffer |
+   | ~C-c ( f~     | ~M-x org-pivotal-pull-stories~             | Pull stories to org buffer                    |
+   | ~C-c ( p~     | ~M-x org-pivotal-push-story~               | Push current story to Pivotal                 |
 
 ** Contributing
    :PROPERTIES:
