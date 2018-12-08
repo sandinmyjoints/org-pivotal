@@ -75,5 +75,6 @@ lint : $(SRCS) clean-elc
 	# Run package-lint to check for packaging mistakes
 	${CASK} emacs $(EMACSFLAGS) \
 	--eval $(PACKAGE_EL) \
+	--eval '(package-refresh-contents)' \
 	-l package-lint.el \
 	-f package-lint-batch-and-exit ${SRCS}
