@@ -32,7 +32,7 @@
 (ert-deftest org-pivotal--select-project-test ()
   (should (equal 12345678
                    (with-mock
-                    (mock (ido-completing-read
+                    (mock (completing-read
                            "Select your project?"
                            '("Test project 1" "Test project 2"))
                           => "Test project 1")
