@@ -89,8 +89,7 @@
 (defun org-pivotal--convert-story-to-headline (story)
   "Convert STORY to org heading."
   (-map (lambda (item)
-          (insert item "\n")
-          (org-indent-line))
+          (insert item "\n"))
         (list (format "* %s %s"
                       (upcase-initials (alist-get 'current_state story))
                       (alist-get 'name story))
