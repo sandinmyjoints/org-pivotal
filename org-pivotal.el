@@ -45,11 +45,10 @@
 (defun org-pivotal--select-project (projects)
   "Prompt user to select a project from PROJECTS."
   (funcall (-compose '(lambda (projects)
-                        (let ((max-mini-window-height (1+ (length projects))))
-                          (cadr (assoc
-                                 (completing-read "Select your project?"
-                                                  (-map 'car projects))
-                                 projects))))
+                        (cadr (assoc
+                               (completing-read "Select your project?"
+                                                (-map 'car projects))
+                               projects)))
                      '(lambda (projects)
                         (-map (lambda (project)
                                 (list (alist-get 'project_name project)
