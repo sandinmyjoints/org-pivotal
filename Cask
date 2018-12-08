@@ -1,10 +1,6 @@
 (source melpa)
 
-(package-file "org-pivotal.el"
-              "org-pivotal-api.el")
-
-(files "org-pivotal.el"
-       "org-pivotal-api.el")
+(package-file "org-pivotal.el")
 
 (development
  (depends-on "a")
