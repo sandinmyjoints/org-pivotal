@@ -71,6 +71,7 @@
                 (format "#+PROPERTY: velocity %d" (alist-get 'velocity_averaged_over project))
                 (format "#+PROPERTY: url %s/n/projects/%d" org-pivotal--base-url (alist-get 'id project))
                 (format "#+PROPERTY: my-id %d" (alist-get 'id my-info))
+                (format "#+PROPERTY: filter owner:%d AND (-state:accepted AND -state:rejected)" (alist-get 'id my-info))
                 (format "#+TODO: %s" (string-join org-pivotal--transition-states " "))
                 ":END:"))
     (call-interactively 'save-buffer))
