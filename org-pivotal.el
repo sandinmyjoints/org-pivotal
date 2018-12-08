@@ -144,6 +144,18 @@
      (a-get org-file-properties "project-id")
      story)))
 
+(define-minor-mode org-pivotal-mode
+  "Get your foos in the right places."
+  :lighter " op"
+  :keymap (let ((map (make-sparse-keymap)))
+            (define-key map (kbd "C-c v i") #'org-pivotal-install-project-metadata)
+            (define-key map (kbd "C-c v f") #'org-pivotal-pull-stories)
+            (define-key map (kbd "C-c v p") #'org-pivotal-push-story)
+            map))
+
+;;;###autoload
+(add-hook 'org-mode-hook 'org-pivotal-mode)
+
 (provide 'org-pivotal)
 
 ;;; org-pivotal.el ends here
