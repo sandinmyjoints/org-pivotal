@@ -137,7 +137,7 @@
 
 ;;;###autoload
 (defun org-pivotal-push-story ()
-  "Pull stories to org buffer."
+  "Push current story to Pivotal."
   (interactive)
   (let ((story (org-pivotal--convert-headline-to-story (org-entry-properties))))
     (org-pivotal-api--put-story
