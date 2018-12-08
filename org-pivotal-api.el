@@ -5,6 +5,7 @@
 ;; Author: Huy Duong <qhuyduong@hotmail.com>
 ;; URL: https://github.com/org-pivotal/org-pivotal
 ;; Version: 0.1
+;; Package-Requires: ((emacs "26.1"))
 
 ;; This file is not part of GNU Emacs.
 
