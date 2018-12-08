@@ -16,7 +16,9 @@ TESTS        = $(wildcard test/*.el)
 ORG_MANUAL   = doc/org-pivotal.org
 TEXI_MANUAL  = doc/org-pivotal.texi
 TAR          = $(DIST)/org-pivotal-$(VERSION).tar
-
+PACKAGE_EL   = "(progn (require 'package) \
+					   (push '(\"melpa\" . \"http://melpa.org/packages/\") package-archives) \
+					   (package-initialize))"
 
 .PHONY: all check test unit ecukes lint install uninstall reinstall clean-all clean clean-elc
 
@@ -72,5 +74,6 @@ lint : $(SRCS) clean-elc
 
 	# Run package-lint to check for packaging mistakes
 	${CASK} emacs $(EMACSFLAGS) \
+	--eval $(PACKAGE_EL) \
 	-l package-lint.el \
 	-f package-lint-batch-and-exit ${SRCS}
