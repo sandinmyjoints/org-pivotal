@@ -149,9 +149,9 @@
   "Get your foos in the right places."
   :lighter " op"
   :keymap (let ((map (make-sparse-keymap)))
-            (define-key map (kbd "C-c v i") #'org-pivotal-install-project-metadata)
-            (define-key map (kbd "C-c v f") #'org-pivotal-pull-stories)
-            (define-key map (kbd "C-c v p") #'org-pivotal-push-story)
+            (define-key map (kbd "C-c ( i") #'org-pivotal-install-project-metadata)
+            (define-key map (kbd "C-c ( f") #'org-pivotal-pull-stories)
+            (define-key map (kbd "C-c ( p") #'org-pivotal-push-story)
             map))
 
 ;;;###autoload
