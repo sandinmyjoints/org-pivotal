@@ -144,6 +144,7 @@
      (a-get org-file-properties "project-id")
      story)))
 
+;;;###autoload
 (define-minor-mode org-pivotal-mode
   "Get your foos in the right places."
   :lighter " op"
