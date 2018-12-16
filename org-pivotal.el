@@ -154,9 +154,6 @@
             (define-key map (kbd "C-c ( p") #'org-pivotal-push-story)
             map))
 
-;;;###autoload
-(add-hook 'org-mode-hook 'org-pivotal-mode)
-
 (provide 'org-pivotal)
 
 ;;; org-pivotal.el ends here
