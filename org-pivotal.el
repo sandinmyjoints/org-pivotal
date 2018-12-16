@@ -146,7 +146,7 @@
 
 ;;;###autoload
 (define-minor-mode org-pivotal-mode
-  "Get your foos in the right places."
+  "Define minor mode for org-pivotal."
   :lighter " op"
   :keymap (let ((map (make-sparse-keymap)))
             (define-key map (kbd "C-c ( i") #'org-pivotal-install-project-metadata)
