@@ -7,62 +7,67 @@
 
 # org-pivotal
 ** Summary
-   :PROPERTIES:
-   :CUSTOM_ID: summary
-   :END:
+:PROPERTIES:
+:CUSTOM_ID: summary
+:END:
 
 org-pivotal is a utility to extend org-mode with Pivotal Tracker abilities
 
 ** Installing
-   :PROPERTIES:
-   :CUSTOM_ID: installing
-   :END:
+:PROPERTIES:
+:CUSTOM_ID: installing
+:END:
 
 You will need Emacs 26.1+, =make= and [[https://github.com/cask/cask][Cask]] to build the project.
 
 #+BEGIN_SRC sh
-    cd org-pivotal
-    make && make install
+cd org-pivotal
+make && make install
 #+END_SRC
 
 ** Initial setup
-   :PROPERTIES:
-   :CUSTOM_ID: initial-setup
-   :END:
+:PROPERTIES:
+:CUSTOM_ID: initial-setup
+:END:
 Before using the tracker you must setup your pivotal API key in Emacs. You can obtain the key from the [[https://www.pivotaltracker.com/profile][Profile]] link in the Pivotal Tracker web application.
 
 After obtaining the ky, you have to manually add it to your .emacs.d or .spacemacs like this:
 
 #+BEGIN_SRC emacs-lisp
-  (setq org-pivotal-api-token "your-secret-token")
+(setq org-pivotal-api-token "your-secret-token")
 #+END_SRC
 
 If you don't want to set it directly in your Emacs's .el file, you can export it to shell environment and use =getenv= to read it from within Emacs
 
 #+BEGIN_SRC emacs-lisp
-  (setq org-pivotal-api-token (getenv "PIVOTAL_API_TOKEN"))
+(setq org-pivotal-api-token (getenv "PIVOTAL_API_TOKEN"))
+#+END_SRC
+
+To enable this package automatically after opening org-mode, add this line to your Emacs's .el file
+#+BEGIN_SRC emacs-lisp
+(add-hook 'org-mode-hook 'org-pivotal-mode)
 #+END_SRC
 
 ** Keybindings
-   :PROPERTIES:
-   :CUSTOM_ID: usage
-   :END:
-   | Keybindings | Interactive commands                       | Description                                   |
-   |-------------+--------------------------------------------+-----------------------------------------------|
-   | ~C-c ( i~   | ~M-x org-pivotal-install-project-metadata~ | Install selected project's metadata to buffer |
-   | ~C-c ( f~   | ~M-x org-pivotal-pull-stories~             | Pull stories to org buffer                    |
-   | ~C-c ( p~   | ~M-x org-pivotal-push-story~               | Push current story to Pivotal                 |
+:PROPERTIES:
+:CUSTOM_ID: usage
+:END:
+| Keybindings | Interactive commands                       | Description                                   |
+|-------------+--------------------------------------------+-----------------------------------------------|
+| ~C-c ( i~   | ~M-x org-pivotal-install-project-metadata~ | Install selected project's metadata to buffer |
+| ~C-c ( f~   | ~M-x org-pivotal-pull-stories~             | Pull stories to org buffer                    |
+| ~C-c ( p~   | ~M-x org-pivotal-push-story~               | Push current story to Pivotal                 |
 
 ** Contributing
-   :PROPERTIES:
-   :CUSTOM_ID: contributing
-   :END:
+:PROPERTIES:
+:CUSTOM_ID: contributing
+:END:
 
 Yes, please do! See [[./CONTRIBUTING.md][CONTRIBUTING]] for guidelines.
 
 ** License
-   :PROPERTIES:
-   :CUSTOM_ID: license
-   :END:
+:PROPERTIES:
+:CUSTOM_ID: license
+:END:
 
 See [[./COPYING][COPYING]]. Copyright (c) 2018 Huy Duong.
