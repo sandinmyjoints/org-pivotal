@@ -1,4 +1,4 @@
-;;; org-pivotal-test.el --- Tests for org-pivotal.el
+;;; test-org-pivotal.el --- Tests for org-pivotal.el
 
 ;; Copyright (C) 2018 Huy Duong
 
@@ -25,23 +25,27 @@
 
 ;;; Code:
 
-(require 'el-mock)
-(require 'ert)
+(require 'buttercup)
 (require 'org-pivotal)
 
-(ert-deftest org-pivotal--select-project-test ()
-  (should (equal 12345678
-                   (with-mock
-                    (mock (completing-read
-                           "Select your project?"
-                           '("Test project 1" "Test project 2"))
-                          => "Test project 1")
-                    (org-pivotal--select-project
-                     '[((project_id . 12345678)
-                        (project_name . "Test project 1"))
-                       ((project_id . 87654321)
-                        (project_name . "Test project 2"))])))))
+(describe "org-pivotal"
+  (describe "org-pivotal--select-project"
+    :var (project-id)
+    (before-each
+      (spy-on 'completing-read :and-return-value "Test project 1")
+      (setq project-id
+            (org-pivotal--select-project
+             '[((project_id . 12345678)
+                (project_name . "Test project 1"))
+               ((project_id . 87654321)
+                (project_name . "Test project 2"))])))
 
-(provide 'org-pivotal-test)
+    (it "calls completing-read with proper project list"
+      (expect 'completing-read :to-have-been-called-with "Select your project?" '("Test project 1" "Test project 2")))
 
-;;; org-pivotal-test.el ends here
+    (it "returns correct project_id"
+      (expect project-id :to-equal 12345678))))
+
+(provide 'test-org-pivotal)
+
+;;; test-org-pivotal.el ends here

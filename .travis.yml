@@ -1,4 +1,4 @@
-language: generic
+language: emacs-lisp
 sudo: false
 
 before_install:
@@ -12,9 +12,12 @@ env:
 matrix:
   fast_finish: true
 
+install:
+  - cask install
+
 script:
   - emacs --version
-  - make check
+  - cask exec buttercup -L .
 
 addons:
   apt:
