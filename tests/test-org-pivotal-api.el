@@ -121,13 +121,13 @@
               "https://www.pivotaltracker.com/services/v5/me"
               "GET")))
 
-  (describe "org-pivotal-api--get-stories"
+  (describe "org-pivotal-api--fetch-stories"
     (before-each
       (spy-on 'org-pivotal-api--call))
 
     (describe "when filter is not provided"
       (before-each
-        (org-pivotal-api--get-stories "123456"))
+        (org-pivotal-api--fetch-stories "123456"))
 
       (it "sends correct URL and request method to API call"
         (expect 'org-pivotal-api--call
@@ -138,14 +138,29 @@
 
     (describe "when filter is provided"
       (before-each
-        (org-pivotal-api--get-stories "123456" "not-assigned-to-me"))
+        (org-pivotal-api--fetch-stories "123456" "not-assigned-to-me"))
 
-      (it "sends correct URL and request method to API call"
+      (it "sends correct URL, request method and query to API call"
         (expect 'org-pivotal-api--call
                 :to-have-been-called-with
                 "https://www.pivotaltracker.com/services/v5/projects/123456/stories"
                 "GET"
-                '(("filter" . "not-assigned-to-me")))))))
+                '(("filter" . "not-assigned-to-me"))))))
+
+  (describe "org-pivotal-api--store-story"
+    (before-each
+      (spy-on 'org-pivotal-api--call)
+      (org-pivotal-api--store-story "123456" '(("id" . "111111")
+                                               ("title" . "write-test"))))
+
+      (it "sends correct URL, request method and data to API call"
+        (expect 'org-pivotal-api--call
+                :to-have-been-called-with
+                "https://www.pivotaltracker.com/services/v5/projects/123456/stories/111111"
+                "PUT"
+                nil
+                '(("id" . "111111")
+                  ("title" . "write-test"))))))
 
 (provide 'test-org-pivotal-api)
 

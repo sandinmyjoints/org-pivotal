@@ -77,17 +77,17 @@ DATA data."
   "Get my Pivotal User ID."
   (org-pivotal-api--call (org-pivotal-api--url-generator "me") "GET"))
 
-(defun org-pivotal-api--get-stories (project-id &optional filter)
+(defun org-pivotal-api--fetch-stories (project-id &optional filter)
   "Get stories from PROJECT-ID's project with FILTER."
   (org-pivotal-api--call
    (org-pivotal-api--url-generator "projects"
                                    project-id
                                    "stories")
    "GET"
-   (if filter `(("filter" . ,filter)))))
+   (when filter `(("filter" . ,filter)))))
 
-(defun org-pivotal-api--put-story (project-id story)
-  "Push STORY to PROJECT-ID's project Pivotal."
+(defun org-pivotal-api--store-story (project-id story)
+  "Store STORY to PROJECT-ID's project Pivotal."
   (org-pivotal-api--call
    (org-pivotal-api--url-generator "projects"
                                    project-id

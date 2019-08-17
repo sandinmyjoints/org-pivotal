@@ -124,7 +124,7 @@
   (interactive)
   (org-set-regexps-and-options)
   (funcall (-compose 'org-pivotal--update-buffer-with-stories
-                     'org-pivotal-api--get-stories)
+                     'org-pivotal-api--fetch-stories)
            (a-get org-file-properties "project-id")
            (a-get org-file-properties "filter")))
 
@@ -140,7 +140,7 @@
   "Push current story to Pivotal."
   (interactive)
   (let ((story (org-pivotal--convert-headline-to-story (org-entry-properties))))
-    (org-pivotal-api--put-story
+    (org-pivotal-api--store-story
      (a-get org-file-properties "project-id")
      story)))
 
