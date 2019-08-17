@@ -88,14 +88,27 @@
 
   (describe "org-pivotal-api--get-project-info"
     (before-each
-      (spy-on 'org-pivotal-api--call)
-      (org-pivotal-api--get-project-info "123456"))
+      (spy-on 'org-pivotal-api--call))
 
-    (it "sends correct URL and request method to API call"
-      (expect 'org-pivotal-api--call
-              :to-have-been-called-with
-              "https://www.pivotaltracker.com/services/v5/projects/123456"
-              "GET")))
+    (describe "when project-id is string"
+      (before-each
+        (org-pivotal-api--get-project-info "123456"))
+
+      (it "sends correct URL and request method to API call"
+        (expect 'org-pivotal-api--call
+                :to-have-been-called-with
+                "https://www.pivotaltracker.com/services/v5/projects/123456"
+                "GET")))
+
+    (describe "when project-id is number"
+      (before-each
+        (org-pivotal-api--get-project-info 123456))
+
+      (it "sends correct URL and request method to API call"
+        (expect 'org-pivotal-api--call
+                :to-have-been-called-with
+                "https://www.pivotaltracker.com/services/v5/projects/123456"
+                "GET"))))
 
   (describe "org-pivotal-api--get-my-info"
     (before-each
