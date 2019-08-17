@@ -39,22 +39,49 @@
     :var (result)
     (before-each
       (setq org-pivotal-api-token "this-is-a-fake-token")
-      (spy-on 'request :and-return-value (record 'request-response 200 nil "Hello Pivotal"))
-      (setq result (org-pivotal-api--call "https://www.pivotaltracker.com"
-                                          "GET"
-                                          '(("filter" . "owner:123456")))))
+      (spy-on 'request :and-return-value (record 'request-response 200 nil "Hello Pivotal")))
 
-    (it "sends correct data to request"
-      (expect 'request
-              :to-have-been-called-with
-              "https://www.pivotaltracker.com"
-              :data nil
-              :headers `(("X-TrackerToken" . "this-is-a-fake-token")
-                         ("Content-Type" . "application/json"))
-              :params '(("filter" . "owner:123456"))
-              :parser 'json-read
-              :sync t
-              :type "GET"))
+    (describe "when data is not provided"
+      (before-each
+        (setq org-pivotal-api-token "this-is-a-fake-token")
+        (spy-on 'request :and-return-value (record 'request-response 200 nil "Hello Pivotal"))
+        (setq result (org-pivotal-api--call "https://www.pivotaltracker.com"
+                                            "GET"
+                                            '(("filter" . "owner:123456")))))
+
+      (it "sends correct request"
+        (expect 'request
+                :to-have-been-called-with
+                "https://www.pivotaltracker.com"
+                :data nil
+                :headers `(("X-TrackerToken" . "this-is-a-fake-token")
+                           ("Content-Type" . "application/json"))
+                :params '(("filter" . "owner:123456"))
+                :parser 'json-read
+                :sync t
+                :type "GET")))
+
+    (describe "when data is provided"
+      :var (result)
+      (before-each
+        (setq org-pivotal-api-token "this-is-a-fake-token")
+        (spy-on 'request :and-return-value (record 'request-response 200 nil "Hello Pivotal"))
+        (setq result (org-pivotal-api--call "https://www.pivotaltracker.com"
+                                            "GET"
+                                            '(("filter" . "owner:123456"))
+                                            "some-data")))
+
+      (it "sends correct request"
+        (expect 'request
+                :to-have-been-called-with
+                "https://www.pivotaltracker.com"
+                :data "\"some-data\""
+                :headers `(("X-TrackerToken" . "this-is-a-fake-token")
+                           ("Content-Type" . "application/json"))
+                :params '(("filter" . "owner:123456"))
+                :parser 'json-read
+                :sync t
+                :type "GET")))
 
     (it "returns correct data"
       (expect result :to-equal "Hello Pivotal")))
