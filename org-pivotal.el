@@ -72,9 +72,7 @@
                 (format "#+PROPERTY: my-id %d" (alist-get 'id my-info))
                 (format "#+PROPERTY: filter owner:%d AND (-state:accepted AND -state:rejected)" (alist-get 'id my-info))
                 (format "#+TODO: %s" (string-join org-pivotal--transition-states " "))
-                ":END:"))
-    (call-interactively 'save-buffer))
-  (org-set-regexps-and-options))
+                ":END:"))))
 
 ;;;###autoload
 (defun org-pivotal-install-project-metadata ()
@@ -115,8 +113,7 @@
     (outline-next-heading)
     (kill-region (point-at-bol) (point-max))
     (-map 'org-pivotal--convert-story-to-headline stories)
-    (call-interactively 'save-buffer))
-  (org-set-regexps-and-options))
+    (call-interactively 'save-buffer)))
 
 ;;;###autoload
 (defun org-pivotal-pull-stories ()
