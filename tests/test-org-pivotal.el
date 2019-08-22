@@ -46,6 +46,40 @@
     (it "returns correct project_id"
       (expect project-id :to-equal 12345678)))
 
+  (describe "org-pivotal--update-buffer-with-metadata"
+    :var (project my-info)
+    (before-each
+      (setq project '((id . 12345678) (name . "Test project 1")))
+      (setq my-info '((id . 87654321)))
+      (spy-on 'set-buffer-file-coding-system))
+
+    (it "sets buffer file encoding system to utf-8"
+      (with-temp-buffer
+        (org-pivotal--update-buffer-with-metadata project my-info)
+        (expect 'set-buffer-file-coding-system :to-have-been-called-with 'utf-8-auto)))
+
+    (it "sets buffer's major mode to org-mode"
+      (with-temp-buffer
+        (org-pivotal--update-buffer-with-metadata project my-info)
+        (expect major-mode :to-equal 'org-mode)))
+
+    (it "replaces buffer content with project's metadata"
+      (with-temp-buffer
+        (insert "Hahahahaaha")
+        (org-pivotal--update-buffer-with-metadata project my-info)
+        (expect (buffer-string)
+                :to-equal
+":PROPERTIES:
+#+PROPERTY: project-name Test project 1
+#+PROPERTY: project-id 12345678
+#+PROPERTY: url https://www.pivotaltracker.com/n/projects/12345678
+#+PROPERTY: my-id 87654321
+#+PROPERTY: filter owner:87654321 AND (-state:accepted AND -state:rejected)
+#+TODO: Unstarted Started Finished Delivered | Accepted Rejected
+:END:
+"
+                ))))
+
   (describe "org-pivotal-install-project-metadata"
     :var (my-info)
     (before-each
