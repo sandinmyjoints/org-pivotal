@@ -19,7 +19,7 @@ org-pivotal is a utility to extend org-mode with Pivotal Tracker abilities
 :CUSTOM_ID: screen-shots
 :END:
 
-[[./assets/screen_shot.png]]
+[[https://github.com/org-pivotal/org-pivotal.github.io/blob/master/assets/screen_shot.png]]
 
 ** Installing
 :PROPERTIES:
