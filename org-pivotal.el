@@ -61,13 +61,11 @@
   (with-current-buffer (current-buffer)
     (erase-buffer)
     (org-mode)
-    (goto-char (point-min))
     (set-buffer-file-coding-system 'utf-8-auto) ;; force utf-8
     (-map (lambda (item) (insert item "\n"))
           (list ":PROPERTIES:"
                 (format "#+PROPERTY: project-name %s" (alist-get 'name project))
                 (format "#+PROPERTY: project-id %d" (alist-get 'id project))
-                (format "#+PROPERTY: velocity %d" (alist-get 'velocity_averaged_over project))
                 (format "#+PROPERTY: url %s/n/projects/%d" org-pivotal--base-url (alist-get 'id project))
                 (format "#+PROPERTY: my-id %d" (alist-get 'id my-info))
                 (format "#+PROPERTY: filter owner:%d AND (-state:accepted AND -state:rejected)" (alist-get 'id my-info))
