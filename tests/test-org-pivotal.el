@@ -185,7 +185,50 @@
 :Labels: \"label 4\" \"label 5\" \"label 6\"
 :END:
 "
-                )))))
+                ))))
+
+  (describe "org-pivotal-pull-stories"
+    :var (stories)
+    (before-each
+      (setq stories '(((name . "Test story 1")
+                       (id . 25251325)
+                       (current_state . "accepted")
+                       (story_type . "chore")
+                       (estimate . 2)
+                       (url . "https://www.pivotaltracker.com/story/show/25251325")
+                       (description . "This is a test story 1")
+                       (updated_at . "2019-08-23T08:04:53Z")
+                       (labels . (((name . "label 1")) ((name . "label 2")) ((name . "label 3")))))
+                      ((name . "Test story 2")
+                       (id . 19001570)
+                       (current_state . "delivered")
+                       (story_type . "feature")
+                       (url . "https://www.pivotaltracker.com/story/show/19001570")
+                       (description . "This is a test story 2")
+                       (updated_at . "2019-08-24T08:04:53Z")
+                       (labels . (((name . "label 4")) ((name . "label 5")) ((name . "label 6")))))))
+      (spy-on 'org-pivotal-api--fetch-stories :and-return-value stories)
+      (spy-on 'org-pivotal--update-buffer-with-stories))
+
+    (it "calls API to fetch stories with filter"
+      (with-temp-buffer
+        (insert
+":PROPERTIES:
+#+PROPERTY: project-name Test project 1
+#+PROPERTY: project-id 12345678
+#+PROPERTY: filter some-filter-expressions
+:END:
+")
+        (org-mode)
+        (org-pivotal-pull-stories)
+        (expect 'org-pivotal-api--fetch-stories
+                :to-have-been-called-with
+                "12345678"
+                "some-filter-expressions")))
+
+    (it "updates current buffer with stories"
+      (org-pivotal-pull-stories)
+      (expect 'org-pivotal--update-buffer-with-stories :to-have-been-called-with stories))))
 
 (provide 'test-org-pivotal)
 
