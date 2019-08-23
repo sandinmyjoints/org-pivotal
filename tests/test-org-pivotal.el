@@ -115,38 +115,74 @@
                 (project_name . "Test project 1"))
               my-info)))
 
-  (describe "org-pivotal--convert-story-to-headline"
-    :var (story)
+  (describe "org-pivotal--update-buffer-with-stories"
+    :var (stories)
     (before-each
-      (setq story '((name . "Test story")
-                    (id . 25251325)
-                    (current_state . "accepted")
-                    (story_type . "chore")
-                    (estimate . 2)
-                    (url . "https://www.pivotaltracker.com/story/show/25251325")
-                    (description . "This is a test story")
-                    (updated_at . "2019-08-23T08:04:53Z")
-                    (labels . (((name . "label 1")) ((name . "label 2")) ((name . "label 3")))))))
+      (setq stories '(((name . "Test story 1")
+                       (id . 25251325)
+                       (current_state . "accepted")
+                       (story_type . "chore")
+                       (estimate . 2)
+                       (url . "https://www.pivotaltracker.com/story/show/25251325")
+                       (description . "This is a test story 1")
+                       (updated_at . "2019-08-23T08:04:53Z")
+                       (labels . (((name . "label 1")) ((name . "label 2")) ((name . "label 3")))))
+                      ((name . "Test story 2")
+                       (id . 19001570)
+                       (current_state . "delivered")
+                       (story_type . "feature")
+                       (url . "https://www.pivotaltracker.com/story/show/19001570")
+                       (description . "This is a test story 2")
+                       (updated_at . "2019-08-24T08:04:53Z")
+                       (labels . (((name . "label 4")) ((name . "label 5")) ((name . "label 6")))))))
+      (spy-on 'set-buffer-file-coding-system))
 
-    (it "appends story to buffer"
+    (it "sets buffer file encoding system to utf-8"
+      (with-temp-buffer
+        (org-pivotal--update-buffer-with-stories stories)
+        (expect 'set-buffer-file-coding-system :to-have-been-called-with 'utf-8-auto)))
+
+    (it "sets buffer's major mode to org-mode"
+      (with-temp-buffer
+        (org-pivotal--update-buffer-with-stories stories)
+        (expect major-mode :to-equal 'org-mode)))
+
+    (it "appends stories to buffer"
       (with-temp-buffer
         (insert ":PROPERTIES:\n#+PROPERTY: project-name Test project 1\n#+PROPERTY: project-id 12345678\n:END:\n")
-        (org-pivotal--convert-story-to-headline story)
+        (insert "* Rejected Test story 3
+:PROPERTIES:
+:ID: 1111111
+:Description: This is a test story 3
+:END:
+")
+        (goto-char (point-min))
+        (org-pivotal--update-buffer-with-stories stories)
         (expect (buffer-string)
                 :to-equal
 ":PROPERTIES:
 #+PROPERTY: project-name Test project 1
 #+PROPERTY: project-id 12345678
 :END:
-* Accepted Test story
+* Accepted Test story 1
 :PROPERTIES:
 :ID: 25251325
 :Type: Chore
 :Points: 2
 :Updated: 2019-08-23T08:04:53Z
 :URL: https://www.pivotaltracker.com/story/show/25251325
-:Description: This is a test story
+:Description: This is a test story 1
 :Labels: \"label 1\" \"label 2\" \"label 3\"
+:END:
+* Delivered Test story 2
+:PROPERTIES:
+:ID: 19001570
+:Type: Feature
+:Points: nil
+:Updated: 2019-08-24T08:04:53Z
+:URL: https://www.pivotaltracker.com/story/show/19001570
+:Description: This is a test story 2
+:Labels: \"label 4\" \"label 5\" \"label 6\"
 :END:
 "
                 )))))
