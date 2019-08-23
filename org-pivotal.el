@@ -110,8 +110,7 @@
     (goto-char (point-min))
     (outline-next-heading)
     (kill-region (point-at-bol) (point-max))
-    (-map 'org-pivotal--convert-story-to-headline stories)
-    (call-interactively 'save-buffer)))
+    (-map 'org-pivotal--convert-story-to-headline stories)))
 
 ;;;###autoload
 (defun org-pivotal-pull-stories ()

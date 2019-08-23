@@ -113,7 +113,43 @@
               :to-have-been-called-with
               '((project_id . 12345678)
                 (project_name . "Test project 1"))
-              my-info))))
+              my-info)))
+
+  (describe "org-pivotal--convert-story-to-headline"
+    :var (story)
+    (before-each
+      (setq story '((name . "Test story")
+                    (id . 25251325)
+                    (current_state . "accepted")
+                    (story_type . "chore")
+                    (estimate . 2)
+                    (url . "https://www.pivotaltracker.com/story/show/25251325")
+                    (description . "This is a test story")
+                    (updated_at . "2019-08-23T08:04:53Z")
+                    (labels . (((name . "label 1")) ((name . "label 2")) ((name . "label 3")))))))
+
+    (it "appends story to buffer"
+      (with-temp-buffer
+        (insert ":PROPERTIES:\n#+PROPERTY: project-name Test project 1\n#+PROPERTY: project-id 12345678\n:END:\n")
+        (org-pivotal--convert-story-to-headline story)
+        (expect (buffer-string)
+                :to-equal
+":PROPERTIES:
+#+PROPERTY: project-name Test project 1
+#+PROPERTY: project-id 12345678
+:END:
+* Accepted Test story
+:PROPERTIES:
+:ID: 25251325
+:Type: Chore
+:Points: 2
+:Updated: 2019-08-23T08:04:53Z
+:URL: https://www.pivotaltracker.com/story/show/25251325
+:Description: This is a test story
+:Labels: \"label 1\" \"label 2\" \"label 3\"
+:END:
+"
+                )))))
 
 (provide 'test-org-pivotal)
 
