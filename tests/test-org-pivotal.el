@@ -228,7 +228,34 @@
 
     (it "updates current buffer with stories"
       (org-pivotal-pull-stories)
-      (expect 'org-pivotal--update-buffer-with-stories :to-have-been-called-with stories))))
+      (expect 'org-pivotal--update-buffer-with-stories :to-have-been-called-with stories)))
+
+ (describe "org-pivotal-push-story"
+    (before-each
+      (spy-on 'org-pivotal-api--store-story))
+
+    (it "calls API to fetch stories with filter"
+      (with-temp-buffer
+        (insert
+":PROPERTIES:
+#+PROPERTY: project-id 12345678
+#+TODO: Unstarted Started Finished Delivered | Accepted Rejected
+:END:
+* Started Test story 1
+:PROPERTIES:
+:ID: 19001570
+:Description: This is a test story 1
+:END:
+")
+        (org-mode)
+        (org-pivotal-push-story)
+        (expect 'org-pivotal-api--store-story
+                :to-have-been-called-with
+                "12345678"
+                '(("id" . "19001570")
+                  ("name" . "Test story 1")
+                  ("current_state" . "Started")
+                  ("description" . "This is a test story 1")))))))
 
 (provide 'test-org-pivotal)
 
