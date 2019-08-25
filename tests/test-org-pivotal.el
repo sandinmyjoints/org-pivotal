@@ -230,7 +230,7 @@
       (org-pivotal-pull-stories)
       (expect 'org-pivotal--update-buffer-with-stories :to-have-been-called-with stories)))
 
- (describe "org-pivotal-push-story"
+  (describe "org-pivotal-push-story"
     (before-each
       (spy-on 'org-pivotal-api--store-story))
 
@@ -257,9 +257,35 @@
                   ("current_state" . "Started")
                   ("description" . "This is a test story 1"))))))
 
- (describe "org-pivotal-pull-story-tasks"
+  (describe "org-pivotal-pull-story-tasks"
+    :var (tasks)
     (before-each
-      (spy-on 'org-pivotal-api--fetch-story-tasks))
+      (setq tasks '[((kind . "task")
+                     (id . 67035208)
+                     (story_id . 167562283)
+                     (description . "[FE] Whenever managers click on the old notification, it should check whether the message is creatable/editable")
+                     (complete . :json-false)
+                     (position . 1)
+                     (created_at . "2019-07-29T09:16:34Z")
+                     (updated_at . "2019-07-29T09:16:34Z"))
+                    ((kind . "task")
+                     (id . 67035285)
+                     (story_id . 167562283)
+                     (description . "[BE] We need to have an API to update messages ")
+                     (complete . t)
+                     (position . 2)
+                     (created_at . "2019-07-29T09:23:58Z")
+                     (updated_at . "2019-08-12T03:11:39Z"))
+                    ((kind . "task")
+                     (id . 67189375)
+                     (story_id . 167562283)
+                     (description . "[BE] can not create or update milestone after event date")
+                     (complete . t)
+                     (position . 3)
+                     (created_at . "2019-08-12T04:49:19Z")
+                     (updated_at . "2019-08-20T03:28:12Z"))])
+      (spy-on 'org-pivotal-api--fetch-story-tasks :and-return-value tasks)
+      (spy-on 'org-pivotal--append-tasks-to-current-story))
 
     (it "calls API to fetch story tasks"
       (with-temp-buffer
@@ -277,7 +303,11 @@
         (expect 'org-pivotal-api--fetch-story-tasks
                 :to-have-been-called-with
                 "12345678"
-                "19001570")))))
+                "19001570")))
+
+    (it "appends tasks to current story"
+      (org-pivotal-pull-story-tasks)
+      (expect 'org-pivotal--append-tasks-to-current-story :to-have-been-called-with tasks))))
 
 (provide 'test-org-pivotal)
 
