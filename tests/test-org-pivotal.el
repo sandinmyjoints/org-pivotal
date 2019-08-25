@@ -118,7 +118,7 @@
   (describe "org-pivotal--update-buffer-with-stories"
     :var (stories)
     (before-each
-      (setq stories '(((name . "Test story 1")
+      (setq stories '[((name . "Test story 1")
                        (id . 25251325)
                        (current_state . "accepted")
                        (story_type . "chore")
@@ -134,7 +134,7 @@
                        (url . "https://www.pivotaltracker.com/story/show/19001570")
                        (description . "This is a test story 2")
                        (updated_at . "2019-08-24T08:04:53Z")
-                       (labels . (((name . "label 4")) ((name . "label 5")) ((name . "label 6")))))))
+                       (labels . (((name . "label 4")) ((name . "label 5")) ((name . "label 6")))))])
       (spy-on 'set-buffer-file-coding-system))
 
     (it "sets buffer file encoding system to utf-8"
@@ -190,7 +190,7 @@
   (describe "org-pivotal-pull-stories"
     :var (stories)
     (before-each
-      (setq stories '(((name . "Test story 1")
+      (setq stories '[((name . "Test story 1")
                        (id . 25251325)
                        (current_state . "accepted")
                        (story_type . "chore")
@@ -206,14 +206,14 @@
                        (url . "https://www.pivotaltracker.com/story/show/19001570")
                        (description . "This is a test story 2")
                        (updated_at . "2019-08-24T08:04:53Z")
-                       (labels . (((name . "label 4")) ((name . "label 5")) ((name . "label 6")))))))
+                       (labels . (((name . "label 4")) ((name . "label 5")) ((name . "label 6")))))])
       (spy-on 'org-pivotal-api--fetch-stories :and-return-value stories)
       (spy-on 'org-pivotal--update-buffer-with-stories))
 
     (it "calls API to fetch stories with filter"
       (with-temp-buffer
         (insert
-":PROPERTIES:
+         ":PROPERTIES:
 #+PROPERTY: project-name Test project 1
 #+PROPERTY: project-id 12345678
 #+PROPERTY: filter some-filter-expressions
