@@ -255,7 +255,29 @@
                 '(("id" . "19001570")
                   ("name" . "Test story 1")
                   ("current_state" . "Started")
-                  ("description" . "This is a test story 1")))))))
+                  ("description" . "This is a test story 1"))))))
+
+ (describe "org-pivotal-pull-story-tasks"
+    (before-each
+      (spy-on 'org-pivotal-api--fetch-story-tasks))
+
+    (it "calls API to fetch story tasks"
+      (with-temp-buffer
+        (insert
+":PROPERTIES:
+#+PROPERTY: project-id 12345678
+:END:
+* Started Test story 1
+:PROPERTIES:
+:ID: 19001570
+:END:
+")
+        (org-mode)
+        (org-pivotal-pull-story-tasks)
+        (expect 'org-pivotal-api--fetch-story-tasks
+                :to-have-been-called-with
+                "12345678"
+                "19001570")))))
 
 (provide 'test-org-pivotal)
 

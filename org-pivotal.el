@@ -139,6 +139,14 @@
      story)))
 
 ;;;###autoload
+(defun org-pivotal-pull-story-tasks ()
+  "Pull current story's tasks."
+  (interactive)
+  (org-pivotal-api--fetch-story-tasks
+   (a-get org-file-properties "project-id")
+   (a-get (org-entry-properties) "ID")))
+
+;;;###autoload
 (define-minor-mode org-pivotal-mode
   "Define minor mode for org-pivotal."
   :lighter " op"
