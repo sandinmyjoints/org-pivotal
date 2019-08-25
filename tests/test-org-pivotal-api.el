@@ -160,7 +160,18 @@
                 "PUT"
                 nil
                 '(("id" . "111111")
-                  ("title" . "write-test"))))))
+                  ("title" . "write-test")))))
+
+  (describe "org-pivotal-api--fetch-story-tasks"
+    (before-each
+      (spy-on 'org-pivotal-api--call)
+      (org-pivotal-api--fetch-story-tasks "123456" "654321"))
+
+      (it "sends correct URL and request method to API call"
+        (expect 'org-pivotal-api--call
+                :to-have-been-called-with
+                "https://www.pivotaltracker.com/services/v5/projects/123456/stories/654321/tasks"
+                "GET"))))
 
 (provide 'test-org-pivotal-api)
 

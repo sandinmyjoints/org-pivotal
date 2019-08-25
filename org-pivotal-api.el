@@ -97,6 +97,16 @@ DATA data."
    nil
    story))
 
+(defun org-pivotal-api--fetch-story-tasks (project-id story-id)
+  "Fetch STORY-ID's tasks in PROJECT-ID's project."
+  (org-pivotal-api--call
+   (org-pivotal-api--url-generator "projects"
+                                   project-id
+                                   "stories"
+                                   story-id
+                                   "tasks")
+   "GET"))
+
 (provide 'org-pivotal-api)
 
 ;;; org-pivotal-api.el ends here
