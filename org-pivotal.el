@@ -142,7 +142,8 @@
   "Convert TASK to org checklist."
   (-map (lambda (item)
           (insert item "\n"))
-        (list (format "- [ ] %s"
+        (list (format "- [%s] %s"
+                      (if (alist-get 'complete task) "x" " ")
                       (alist-get 'description task)))))
 
 (defun org-pivotal--append-tasks-to-current-story (tasks)
