@@ -262,42 +262,22 @@
     (before-each
       (setq tasks '[((kind . "task")
                      (id . 67035208)
-                     (story_id . 167562283)
-                     (description . "[FE] Whenever managers click on the old notification, it should check whether the message is creatable/editable")
-                     (complete . :json-false)
-                     (position . 1)
-                     (created_at . "2019-07-29T09:16:34Z")
-                     (updated_at . "2019-07-29T09:16:34Z"))
+                     (description . "Task 1")
+                     (complete . nil))
                     ((kind . "task")
                      (id . 67035285)
-                     (story_id . 167562283)
-                     (description . "[BE] We need to have an API to update messages ")
-                     (complete . t)
-                     (position . 2)
-                     (created_at . "2019-07-29T09:23:58Z")
-                     (updated_at . "2019-08-12T03:11:39Z"))
+                     (description . "Task 2")
+                     (complete . t))
                     ((kind . "task")
                      (id . 67189375)
-                     (story_id . 167562283)
-                     (description . "[BE] can not create or update milestone after event date")
-                     (complete . t)
-                     (position . 3)
-                     (created_at . "2019-08-12T04:49:19Z")
-                     (updated_at . "2019-08-20T03:28:12Z"))])
-      (spy-on 'org-pivotal-api--fetch-story-tasks :and-return-value tasks)
-      (spy-on 'org-pivotal--append-tasks-to-current-story))
+                     (description . "Task 3")
+                     (complete . t))])
+      (spy-on 'org-pivotal-api--fetch-story-tasks :and-return-value tasks))
 
     (it "calls API to fetch story tasks"
       (with-temp-buffer
-        (insert
-":PROPERTIES:
-#+PROPERTY: project-id 12345678
-:END:
-* Started Test story 1
-:PROPERTIES:
-:ID: 19001570
-:END:
-")
+        (insert ":PROPERTIES:\n#+PROPERTY: project-name Test project 1\n#+PROPERTY: project-id 12345678\n:END:\n")
+        (insert "* Started Test story 1\n:PROPERTIES:\n:ID: 19001570\n:END:\n")
         (org-mode)
         (org-pivotal-pull-story-tasks)
         (expect 'org-pivotal-api--fetch-story-tasks
@@ -306,8 +286,25 @@
                 "19001570")))
 
     (it "appends tasks to current story"
-      (org-pivotal-pull-story-tasks)
-      (expect 'org-pivotal--append-tasks-to-current-story :to-have-been-called-with tasks))))
+      (with-temp-buffer
+        (insert ":PROPERTIES:\n#+PROPERTY: project-name Test project 1\n#+PROPERTY: project-id 12345678\n:END:\n")
+        (insert "* Started Test story 1\n:PROPERTIES:\n:ID: 19001570\n:END:\n")
+        (org-pivotal-pull-story-tasks)
+        (expect (buffer-string)
+                :to-equal
+                ":PROPERTIES:
+#+PROPERTY: project-name Test project 1
+#+PROPERTY: project-id 12345678
+:END:
+* Started Test story 1
+:PROPERTIES:
+:ID: 19001570
+:END:
+- [ ] Task 1
+- [ ] Task 2
+- [ ] Task 3
+"
+                )))))
 
 (provide 'test-org-pivotal)
 

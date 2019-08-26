@@ -138,6 +138,20 @@
      (a-get org-file-properties "project-id")
      story)))
 
+(defun org-pivotal--convert-task-to-checklist (task)
+  "Convert TASK to org checklist."
+  (-map (lambda (item)
+          (insert item "\n"))
+        (list (format "- [ ] %s"
+                      (alist-get 'description task)))))
+
+(defun org-pivotal--append-tasks-to-current-story (tasks)
+  "Append TASKS to current story."
+  (with-current-buffer (current-buffer)
+    (org-mode)
+    (set-buffer-file-coding-system 'utf-8-auto) ;; force utf-8
+    (-map 'org-pivotal--convert-task-to-checklist tasks)))
+
 ;;;###autoload
 (defun org-pivotal-pull-story-tasks ()
   "Pull current story's tasks."
