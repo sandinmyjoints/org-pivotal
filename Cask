@@ -14,6 +14,5 @@
  (depends-on "dash-functional")
  (depends-on "ecukes")
  (depends-on "el-mock")
- (depends-on "package-lint")
  (depends-on "request")
  (depends-on "undercover"))
