@@ -53,6 +53,7 @@ To enable this package automatically after opening org-mode, add this line to yo
 | ~C-c ( i~   | ~M-x org-pivotal-install-project-metadata~ | Install selected project's metadata to buffer |
 | ~C-c ( f~   | ~M-x org-pivotal-pull-stories~             | Pull stories to org buffer                    |
 | ~C-c ( p~   | ~M-x org-pivotal-push-story~               | Push current story to Pivotal                 |
+| ~C-c ( t~   | ~M-x org-pivotal-pull-story-tasks~         | Push current story to Pivotal                 |
 
 ** Contributing
 :PROPERTIES:
