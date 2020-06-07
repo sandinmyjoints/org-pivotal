@@ -68,8 +68,8 @@
         (insert "Hahahahaaha")
         (org-pivotal--update-buffer-with-metadata project my-info)
         (expect (buffer-string)
-                :to-equal
-":PROPERTIES:
+                :to-equal "\
+:PROPERTIES:
 #+PROPERTY: project-name Test project 1
 #+PROPERTY: project-id 12345678
 #+PROPERTY: url https://www.pivotaltracker.com/n/projects/12345678
@@ -77,8 +77,7 @@
 #+PROPERTY: filter -state:accepted AND -state:rejected
 #+TODO: Unstarted Started Finished Delivered | Accepted Rejected
 :END:
-"
-                ))))
+"))))
 
   (describe "org-pivotal-install-project-metadata"
     :var (my-info)
@@ -149,43 +148,48 @@
 
     (it "appends stories to buffer"
       (with-temp-buffer
-        (insert ":PROPERTIES:\n#+PROPERTY: project-name Test project 1\n#+PROPERTY: project-id 12345678\n:END:\n")
-        (insert "* Rejected Test story 3
+        (insert "\
 :PROPERTIES:
-:ID: 1111111
-:Description: This is a test story 3
+#+PROPERTY: project-name Test project 1
+#+PROPERTY: project-id 12345678
 :END:
+")
+        (insert "\
+* Rejected Test story 3
+  :PROPERTIES:
+  :ID: 1111111
+  :Description: This is a test story 3
+  :END:
 ")
         (goto-char (point-min))
         (org-pivotal--update-buffer-with-stories stories)
         (expect (buffer-string)
-                :to-equal
-":PROPERTIES:
+                :to-equal "\
+:PROPERTIES:
 #+PROPERTY: project-name Test project 1
 #+PROPERTY: project-id 12345678
 :END:
 * Accepted Test story 1
-:PROPERTIES:
-:ID: 25251325
-:Type: Chore
-:Points: 2
-:Updated: 2019-08-23T08:04:53Z
-:URL: https://www.pivotaltracker.com/story/show/25251325
-:Description: This is a test story 1
-:Labels: \"label 1\" \"label 2\" \"label 3\"
-:END:
+  :PROPERTIES:
+  :ID: 25251325
+  :Type: Chore
+  :Points: 2
+  :Updated: 2019-08-23T08:04:53Z
+  :URL: https://www.pivotaltracker.com/story/show/25251325
+  :Description: This is a test story 1
+  :Labels: \"label 1\" \"label 2\" \"label 3\"
+  :END:
 * Delivered Test story 2
-:PROPERTIES:
-:ID: 19001570
-:Type: Feature
-:Points: nil
-:Updated: 2019-08-24T08:04:53Z
-:URL: https://www.pivotaltracker.com/story/show/19001570
-:Description: This is a test story 2
-:Labels: \"label 4\" \"label 5\" \"label 6\"
-:END:
-"
-                ))))
+  :PROPERTIES:
+  :ID: 19001570
+  :Type: Feature
+  :Points: nil
+  :Updated: 2019-08-24T08:04:53Z
+  :URL: https://www.pivotaltracker.com/story/show/19001570
+  :Description: This is a test story 2
+  :Labels: \"label 4\" \"label 5\" \"label 6\"
+  :END:
+"))))
 
   (describe "org-pivotal-pull-stories"
     :var (stories)
@@ -212,8 +216,8 @@
 
     (it "calls API to fetch stories with filter"
       (with-temp-buffer
-        (insert
-         ":PROPERTIES:
+        (insert "\
+:PROPERTIES:
 #+PROPERTY: project-name Test project 1
 #+PROPERTY: project-id 12345678
 #+PROPERTY: filter some-filter-expressions
@@ -236,16 +240,16 @@
 
     (it "calls API to push current story"
       (with-temp-buffer
-        (insert
-":PROPERTIES:
+        (insert "\
+:PROPERTIES:
 #+PROPERTY: project-id 12345678
 #+TODO: Unstarted Started Finished Delivered | Accepted Rejected
 :END:
 * Started Test story 1
-:PROPERTIES:
-:ID: 19001570
-:Description: This is a test story 1
-:END:
+  :PROPERTIES:
+  :ID: 19001570
+  :Description: This is a test story 1
+  :END:
 ")
         (org-mode)
         (org-pivotal-push-story)
@@ -276,8 +280,18 @@
 
     (it "calls API to fetch story tasks"
       (with-temp-buffer
-        (insert ":PROPERTIES:\n#+PROPERTY: project-name Test project 1\n#+PROPERTY: project-id 12345678\n:END:\n")
-        (insert "* Started Test story 1\n:PROPERTIES:\n:ID: 19001570\n:END:\n")
+        (insert "\
+:PROPERTIES:
+#+PROPERTY: project-name Test project 1
+#+PROPERTY: project-id 12345678
+:END:
+")
+        (insert "\
+* Started Test story 1
+:PROPERTIES:
+:ID: 19001570
+:END:
+")
         (org-mode)
         (org-pivotal-pull-story-tasks)
         (expect 'org-pivotal-api--fetch-story-tasks
@@ -287,24 +301,33 @@
 
     (it "appends tasks to current story"
       (with-temp-buffer
-        (insert ":PROPERTIES:\n#+PROPERTY: project-name Test project 1\n#+PROPERTY: project-id 12345678\n:END:\n")
-        (insert "* Started Test story 1\n:PROPERTIES:\n:ID: 19001570\n:END:\n")
+        (insert "\
+:PROPERTIES:
+#+PROPERTY: project-name Test project 1
+#+PROPERTY: project-id 12345678
+:END:
+")
+        (insert "\
+* Started Test story 1
+  :PROPERTIES:
+  :ID: 19001570
+  :END:
+")
         (org-pivotal-pull-story-tasks)
         (expect (buffer-string)
-                :to-equal
-                ":PROPERTIES:
+                :to-equal "\
+:PROPERTIES:
 #+PROPERTY: project-name Test project 1
 #+PROPERTY: project-id 12345678
 :END:
 * Started Test story 1
-:PROPERTIES:
-:ID: 19001570
-:END:
-- [ ] Task 1
-- [x] Task 2
-- [x] Task 3
-"
-                )))))
+  :PROPERTIES:
+  :ID: 19001570
+  :END:
+  - [ ] Task 1
+  - [x] Task 2
+  - [x] Task 3
+")))))
 
 (provide 'test-org-pivotal)
 
