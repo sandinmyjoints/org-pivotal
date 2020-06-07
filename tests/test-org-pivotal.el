@@ -267,7 +267,7 @@
       (setq tasks '[((kind . "task")
                      (id . 67035208)
                      (description . "Task 1")
-                     (complete . nil))
+                     (complete . :json-false))
                     ((kind . "task")
                      (id . 67035285)
                      (description . "Task 2")
