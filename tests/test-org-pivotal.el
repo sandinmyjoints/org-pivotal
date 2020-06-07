@@ -74,7 +74,7 @@
 #+PROPERTY: project-id 12345678
 #+PROPERTY: url https://www.pivotaltracker.com/n/projects/12345678
 #+PROPERTY: my-id 87654321
-#+PROPERTY: filter owner:87654321 AND (-state:accepted AND -state:rejected)
+#+PROPERTY: filter -state:accepted AND -state:rejected
 #+TODO: Unstarted Started Finished Delivered | Accepted Rejected
 :END:
 "
