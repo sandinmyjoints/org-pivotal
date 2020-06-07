@@ -70,7 +70,8 @@
                 (format "#+PROPERTY: my-id %d" (alist-get 'id my-info))
                 (format "#+PROPERTY: filter -state:accepted AND -state:rejected")
                 (format "#+TODO: %s" (string-join org-pivotal--transition-states " "))
-                ":END:"))))
+                ":END:
+"))))
 
 ;;;###autoload
 (defun org-pivotal-install-project-metadata ()
@@ -100,7 +101,8 @@
                                      (-map (lambda (label) (format "\"%s\""(alist-get 'name label)))
                                            (alist-get 'labels story))
                                      " "))
-              "  :END:")))
+              "  :END:
+")))
 
 (defun org-pivotal--update-buffer-with-stories (stories)
   "Update org buffer with STORIES."
