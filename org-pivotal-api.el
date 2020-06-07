@@ -52,7 +52,8 @@ METHOD to use
 QUERY params
 DATA data."
   (funcall (-compose (lambda (response)
-                       (request-response-data response))
+                       (unless (request-response-error-thrown response)
+                         (request-response-data response)))
                      (lambda (url method query data)
                        (request url
                                 :data (if data (json-encode data) nil)
