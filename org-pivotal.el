@@ -134,7 +134,7 @@
   "Push current story to Pivotal."
   (interactive)
   (let ((story (org-pivotal--convert-headline-to-story (org-entry-properties))))
-    (org-pivotal-api--store-story
+    (org-pivotal-api--update-story
      (a-get org-file-properties "project-id")
      story)))
 

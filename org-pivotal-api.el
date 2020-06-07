@@ -86,7 +86,7 @@ DATA data."
    "GET"
    (when filter `(("filter" . ,filter)))))
 
-(defun org-pivotal-api--store-story (project-id story)
+(defun org-pivotal-api--update-story (project-id story)
   "Store STORY to PROJECT-ID's project Pivotal."
   (org-pivotal-api--call
    (org-pivotal-api--url-generator "projects"

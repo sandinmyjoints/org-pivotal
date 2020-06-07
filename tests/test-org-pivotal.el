@@ -232,9 +232,9 @@
 
   (describe "org-pivotal-push-story"
     (before-each
-      (spy-on 'org-pivotal-api--store-story))
+      (spy-on 'org-pivotal-api--update-story))
 
-    (it "calls API to fetch stories with filter"
+    (it "calls API to push current story"
       (with-temp-buffer
         (insert
 ":PROPERTIES:
@@ -249,7 +249,7 @@
 ")
         (org-mode)
         (org-pivotal-push-story)
-        (expect 'org-pivotal-api--store-story
+        (expect 'org-pivotal-api--update-story
                 :to-have-been-called-with
                 "12345678"
                 '(("id" . "19001570")
