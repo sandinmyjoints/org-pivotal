@@ -170,6 +170,7 @@
             (define-key map (kbd "C-c ( i") #'org-pivotal-install-project-metadata)
             (define-key map (kbd "C-c ( f") #'org-pivotal-pull-stories)
             (define-key map (kbd "C-c ( p") #'org-pivotal-push-story)
+            (define-key map (kbd "C-c ( t") #'org-pivotal-pull-story-tasks)
             map))
 
 (provide 'org-pivotal)
