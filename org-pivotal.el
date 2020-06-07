@@ -119,8 +119,8 @@
   (org-set-regexps-and-options)
   (funcall (-compose 'org-pivotal--update-buffer-with-stories
                      'org-pivotal-api--fetch-stories)
-           (a-get org-file-properties "project-id")
-           (a-get org-file-properties "filter")))
+           (org-entry-get (point) "project-id" t)
+           (org-entry-get (point) "filter" t)))
 
 (defun org-pivotal--convert-headline-to-story (properties)
   "Convert headline's PROPERTIES to story."
@@ -135,7 +135,7 @@
   (interactive)
   (let ((story (org-pivotal--convert-headline-to-story (org-entry-properties))))
     (org-pivotal-api--update-story
-     (a-get org-file-properties "project-id")
+     (org-entry-get (point) "project-id" t)
      story)))
 
 (defun org-pivotal--convert-task-to-checklist (task)
@@ -159,7 +159,7 @@
   (interactive)
   (funcall (-compose 'org-pivotal--append-tasks-to-current-story
                      'org-pivotal-api--fetch-story-tasks)
-           (a-get org-file-properties "project-id")
+           (org-entry-get (point) "project-id" t)
            (a-get (org-entry-properties) "ID")))
 
 ;;;###autoload
