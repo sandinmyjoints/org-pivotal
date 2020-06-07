@@ -160,7 +160,7 @@
   (funcall (-compose 'org-pivotal--append-tasks-to-current-story
                      'org-pivotal-api--fetch-story-tasks)
            (org-entry-get (point) "project-id" t)
-           (a-get (org-entry-properties) "ID")))
+           (org-entry-get (point) "ID")))
 
 ;;;###autoload
 (define-minor-mode org-pivotal-mode
