@@ -39,12 +39,12 @@
     :var (result)
     (before-each
       (setq org-pivotal-api-token "this-is-a-fake-token")
-      (spy-on 'request :and-return-value (record 'request-response 200 nil "Hello Pivotal")))
+      (spy-on 'request :and-return-value (record 'request-response 200 nil "Hello Pivotal" nil)))
 
     (describe "when data is not provided"
       (before-each
         (setq org-pivotal-api-token "this-is-a-fake-token")
-        (spy-on 'request :and-return-value (record 'request-response 200 nil "Hello Pivotal"))
+        (spy-on 'request :and-return-value (record 'request-response 200 nil "Hello Pivotal" nil))
         (setq result (org-pivotal-api--call "https://www.pivotaltracker.com"
                                             "GET"
                                             '(("filter" . "owner:123456")))))
@@ -65,7 +65,7 @@
       :var (result)
       (before-each
         (setq org-pivotal-api-token "this-is-a-fake-token")
-        (spy-on 'request :and-return-value (record 'request-response 200 nil "Hello Pivotal"))
+        (spy-on 'request :and-return-value (record 'request-response 200 nil "Hello Pivotal" nil))
         (setq result (org-pivotal-api--call "https://www.pivotaltracker.com"
                                             "GET"
                                             '(("filter" . "owner:123456"))
