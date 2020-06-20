@@ -1,0 +1,25 @@
+version: 2.1
+
+jobs:
+  test:
+    parameters:
+      version:
+        type: string
+    docker:
+      - image: silex/emacs:<< parameters.version >>-dev
+    steps:
+      - checkout
+      - run:
+          name: Install project dependencies 
+          command: cask install
+      - run:
+          name: Run tests
+          command: COVERALLS_REPO_TOKEN=$COVERALLS_REPO_TOKEN cask exec buttercup -L .
+
+workflows:
+  all-tests:
+    jobs:
+      - test:
+          matrix:
+            parameters:
+              version: ["26.3", "27.0", "master"]
