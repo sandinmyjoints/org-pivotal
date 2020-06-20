@@ -1,8 +1,12 @@
 version: 2.1
+
 jobs:
-  build:
+  test:
+    parameters:
+      version:
+        type: string
     docker:
-      - image: silex/emacs:26.3-dev
+      - image: silex/emacs:<< parameters.version >>-dev
     steps:
       - checkout
       - run:
@@ -11,3 +15,11 @@ jobs:
       - run:
           name: Run tests
           command: cask exec buttercup -L .
+
+workflows:
+  all-tests:
+    jobs:
+      - test:
+          matrix:
+            parameters:
+              version: ["26.3", "27.0"]
