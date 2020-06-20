@@ -1,73 +1,56 @@
 [[https://melpa.org/#/org-pivotal][file:https://melpa.org/packages/org-pivotal-badge.svg]]
-[[https://travis-ci.com/org-pivotal/org-pivotal][https://travis-ci.com/org-pivotal/org-pivotal.svg?branch=master]]
+[[https://circleci.com/gh/org-pivotal/org-pivotal/tree/master.svg?style=svg][https://circleci.com/gh/org-pivotal/org-pivotal/tree/master]]
 [[https://coveralls.io/github/org-pivotal/org-pivotal?branch=master][https://coveralls.io/repos/github/org-pivotal/org-pivotal/badge.svg?branch=master]]
 [[https://www.gnu.org/licenses/gpl-3.0][https://img.shields.io/badge/License-GPL%20v3-blue.svg]]
 [[http://hits.dwyl.io/org-pivotal/org-pivotal][http://hits.dwyl.io/org-pivotal/org-pivotal.svg]]
 [[https://github.com/org-pivotal/org-pivotal/graphs/commit-activity][https://img.shields.io/badge/Maintained%3F-yes-green.svg]]
 [[http://makeapullrequest.com][https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square]]
 
-# org-pivotal
 ** Summary
-:PROPERTIES:
-:CUSTOM_ID: summary
-:END:
 
-org-pivotal is a utility to extend org-mode with Pivotal Tracker abilities
+   org-pivotal is a utility to extend org-mode with Pivotal Tracker abilities
 
 ** Screen shots
-:PROPERTIES:
-:CUSTOM_ID: screen-shots
-:END:
 
-[[https://github.com/org-pivotal/org-pivotal.github.io/blob/master/assets/screen_shot.png]]
+   [[https://github.com/org-pivotal/org-pivotal.github.io/blob/master/assets/screen_shot.png]]
 
 ** Initial setup
-:PROPERTIES:
-:CUSTOM_ID: initial-setup
-:END:
-Before using the tracker you must setup your pivotal API key in Emacs. You can obtain the key from the [[https://www.pivotaltracker.com/profile][Profile]] link in the Pivotal Tracker web application.
+  
+   Before using the tracker you must setup your pivotal API key in Emacs. You can obtain the key from the [[https://www.pivotaltracker.com/profile][Profile]] link in the Pivotal Tracker web application.
 
-After obtaining the ky, you have to manually add it to your .emacs.d or .spacemacs like this:
+   After obtaining the ky, you have to manually add it to your .emacs.d or .spacemacs like this:
 
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
 (setq org-pivotal-api-token "your-secret-token")
-#+END_SRC
+   #+END_SRC
 
-If you don't want to set it directly in your Emacs's .el file, you can export it to shell environment and use =getenv= to read it from within Emacs
+   If you don't want to set it directly in your Emacs's .el file, you can export it to shell environment and use =getenv= to read it from within Emacs
 
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
 (setq org-pivotal-api-token (getenv "PIVOTAL_API_TOKEN"))
-#+END_SRC
+   #+END_SRC
 
-To enable this package automatically after opening org-mode, add this line to your Emacs's .el file
-#+BEGIN_SRC emacs-lisp
+   To enable this package automatically after opening org-mode, add this line to your Emacs's .el file
+   #+BEGIN_SRC emacs-lisp
 (add-hook 'org-mode-hook 'org-pivotal-mode)
-#+END_SRC
+   #+END_SRC
 
 ** Keybindings
-:PROPERTIES:
-:CUSTOM_ID: usage
-:END:
-| Keybindings | Interactive commands                       | Description                                   |
-|-------------+--------------------------------------------+-----------------------------------------------|
-| ~C-c ( i~   | ~M-x org-pivotal-install-project-metadata~ | Install selected project's metadata to buffer |
-| ~C-c ( f~   | ~M-x org-pivotal-pull-stories~             | Pull stories to org buffer                    |
-| ~C-c ( p~   | ~M-x org-pivotal-push-story~               | Push current story to Pivotal                 |
-| ~C-c ( t~   | ~M-x org-pivotal-pull-story-tasks~         | Pull current story's tasks                    |
+
+   | Keybindings | Interactive commands                       | Description                                   |
+   |-------------+--------------------------------------------+-----------------------------------------------|
+   | ~C-c ( i~   | ~M-x org-pivotal-install-project-metadata~ | Install selected project's metadata to buffer |
+   | ~C-c ( f~   | ~M-x org-pivotal-pull-stories~             | Pull stories to org buffer                    |
+   | ~C-c ( p~   | ~M-x org-pivotal-push-story~               | Push current story to Pivotal                 |
+   | ~C-c ( t~   | ~M-x org-pivotal-pull-story-tasks~         | Pull current story's tasks                    |
 
 ** Contributing
-:PROPERTIES:
-:CUSTOM_ID: contributing
-:END:
 
-Yes, please do! See [[./CONTRIBUTING.md][CONTRIBUTING]] for guidelines.
+   Yes, please do! See [[./CONTRIBUTING.md][CONTRIBUTING]] for guidelines.
 
 ** License
-:PROPERTIES:
-:CUSTOM_ID: license
-:END:
 
-See [[./COPYING][COPYING]]. Copyright (c) 2018 Huy Duong.
+   See [[./COPYING][COPYING]]. Copyright (c) 2018 Huy Duong.
 
 ** Roadmap
 
