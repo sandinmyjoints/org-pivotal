@@ -16,4 +16,4 @@
  (depends-on "ecukes")
  (depends-on "el-mock")
  (depends-on "request")
- (depends-on "undercover"))
+ (depends-on "undercover" :git "https://github.com/doublep/undercover.el.git"))
