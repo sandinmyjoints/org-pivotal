@@ -5,7 +5,7 @@
 ;; Author: Huy Duong <qhuyduong@hotmail.com>
 ;; URL: https://github.com/org-pivotal/org-pivotal
 ;; Version: 0.1
-;; Package-Requires: ((a "0.1.1") (dash "2.14.1") (dash-functional "1.2.0") (emacs "26.1") (request "0.3.0"))
+;; Package-Requires: ((a "0.1.1") (dash "2.18.0") (emacs "26.1") (request "0.3.0"))
 
 ;; This file is not part of GNU Emacs.
 
@@ -30,7 +30,6 @@
 
 (require 'a)
 (require 'dash)
-(require 'dash-functional)
 (require 'org)
 (require 'org-pivotal-api)
 (require 'subr-x)
