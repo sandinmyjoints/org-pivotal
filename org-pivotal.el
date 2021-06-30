@@ -135,10 +135,14 @@
 (defun org-pivotal-push-story ()
   "Push current story to Pivotal."
   (interactive)
-  (let ((story (org-pivotal--convert-headline-to-story (org-entry-properties))))
-    (org-pivotal-api--update-story
-     (org-entry-get (point) "project-id" t)
-     story)))
+  (let* ((story (org-pivotal--convert-headline-to-story (org-entry-properties)))
+         (id (a-get story "id")))
+    (if id (org-pivotal-api--update-story
+              (org-entry-get (point) "project-id" t)
+              story)
+      (org-pivotal-api--create-story
+              (org-entry-get (point) "project-id" t)
+              story))))
 
 (defun org-pivotal--convert-task-to-checklist (task)
   "Convert TASK to org checklist."
