@@ -95,13 +95,15 @@
               (format "  :Points: %s" (alist-get 'estimate story))
               (format "  :Updated: %s" (alist-get 'updated_at story))
               (format "  :URL: %s" (alist-get 'url story))
-              (format "  :Description: %s" (alist-get 'description story))
+              ;; (format "  :Description: %s" (alist-get 'description story))
               (format "  :Labels: %s" (string-join
-                                     (-map (lambda (label) (format "\"%s\""(alist-get 'name label)))
-                                           (alist-get 'labels story))
-                                     " "))
+                                       (-map (lambda (label) (format "\"%s\""(alist-get 'name label)))
+                                             (alist-get 'labels story))
+                                       " "))
               "  :END:
-")))
+"))
+  (insert (format "** Description\n%s\n" (alist-get 'description story))))
+
 
 (defun org-pivotal--update-buffer-with-stories (stories)
   "Update org buffer with STORIES."
@@ -129,6 +131,19 @@
         (numberp property)
         (not (s-equals? property "")))))
 
+;; Based on https://emacs.stackexchange.com/a/48438/2163
+(defun org-pivotal--get-description-content ()
+  (save-excursion
+    (save-restriction
+      (widen)
+      (ignore-errors (outline-up-heading 1))
+      (let* ((elt (org-element-at-point))
+             (title (org-element-property :title elt))
+             (beg (progn (org-end-of-meta-data t) (point)))
+             (end (progn (outline-next-visible-heading 1) (point))))
+        (s-replace "** Description\n" ""
+                   (buffer-substring-no-properties beg end))))))
+
 (defun org-pivotal--convert-headline-to-story (properties)
   "Convert headline's PROPERTIES to story."
   (let
@@ -150,7 +165,8 @@
                    (cons "labels" (if (org-pivotal--property-exists labels)
                                       (vconcat (s-split " " labels))
                                     nil))
-                   (cons "description" description)))))
+                   (cons "description"
+                         (org-pivotal--get-description-content))))))
 
 ;;;###autoload
 (defun org-pivotal-push-story ()
