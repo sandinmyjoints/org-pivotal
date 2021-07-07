@@ -38,7 +38,7 @@
   "Base URL.")
 
 (defconst org-pivotal--transition-states
-  '("Unstarted" "Started" "Finished" "Delivered" "|" "Accepted" "Rejected")
+  '("Unscheduled" "Unstarted" "Started" "Finished" "Delivered" "|" "Accepted" "Rejected")
   "Story status will be one of these values.")
 
 (defun org-pivotal--select-project (projects)
