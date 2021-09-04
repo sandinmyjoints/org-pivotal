@@ -124,6 +124,15 @@ DATA data."
                                    "tasks")
    "GET"))
 
+(defun org-pivotal-api--fetch-story (project-id story-id)
+  "Get a stories from PROJECT-ID's project."
+  (org-pivotal-api--call
+   (org-pivotal-api--url-generator "projects"
+                                   project-id
+                                   "stories"
+                                   story-id)
+   "GET"))
+
 (provide 'org-pivotal-api)
 
 ;;; org-pivotal-api.el ends here
