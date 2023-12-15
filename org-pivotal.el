@@ -133,6 +133,7 @@
 
 ;; Based on https://emacs.stackexchange.com/a/48438/2163
 (defun org-pivotal--get-description-content ()
+  "Only works when description is written in Markdown format."
   (save-excursion
     (save-restriction
       (widen)
@@ -140,9 +141,26 @@
       (let* ((elt (org-element-at-point))
              (title (org-element-property :title elt))
              (beg (progn (org-end-of-meta-data t) (point)))
+             ;; Looks for next outline heading -- only works for Markdown content in description, not org.
              (end (progn (outline-next-visible-heading 1) (point))))
         (s-replace "** Description\n" ""
                    (buffer-substring-no-properties beg end))))))
+
+(defun org-pivotal--get-description-content-org ()
+  (save-excursion
+    (save-restriction
+      (widen)
+      (ignore-errors (outline-up-heading 1))
+      (outline-mark-subtree)
+      (let* ((elt (org-element-at-point))
+             (title (org-element-property :title elt))
+             (end (mark))
+             (beg (progn (org-end-of-meta-data t) (point)))
+             )
+        ;; TODO: run this through (org-pandoc-export 'gfm a s v b e t)
+        ;; or maybe (org-export-as BACKEND &optional SUBTREEP VISIBLE-ONLY BODY-ONLY EXT-PLIST)
+        ;; or (org-export-to-buffer BACKEND BUFFER &optional ASYNC SUBTREEP VISIBLE-ONLY BODY-ONLY EXT-PLIST POST-PROCESS)
+        (buffer-substring-no-properties beg end)))))
 
 (defun org-pivotal--convert-headline-to-story (properties)
   "Convert headline's PROPERTIES to story."
